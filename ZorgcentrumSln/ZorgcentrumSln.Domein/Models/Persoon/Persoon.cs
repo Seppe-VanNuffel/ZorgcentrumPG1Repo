@@ -1,4 +1,4 @@
-﻿namespace ZorgcentrumSln.Domein.Models;
+﻿namespace ZorgcentrumSln.Domein.Models.Persoon;
 
 internal abstract class Persoon(string rijksregisterNummer, string naam, string voornaam)
 {

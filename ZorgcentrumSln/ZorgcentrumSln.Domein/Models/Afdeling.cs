@@ -2,4 +2,6 @@
 
 internal class Afdeling
 {
+    public string Naam { get; }
+
 }
