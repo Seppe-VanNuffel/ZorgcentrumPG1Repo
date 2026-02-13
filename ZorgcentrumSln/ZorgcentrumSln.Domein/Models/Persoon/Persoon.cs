@@ -7,4 +7,5 @@ internal abstract class Persoon(string rijksregisterNummer, string naam, string 
     public string Naam { get; } = naam;
 
     public string Voornaam { get; } = voornaam;
+
 }
