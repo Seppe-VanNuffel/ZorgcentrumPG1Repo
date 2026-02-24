@@ -1,8 +1,8 @@
 ﻿namespace ZorgcentrumSln.Domein.Models.Persoon;
 
-internal class Patient(string rijksregisterNummer, string naam, string voornaam, HashSet<Afdeling> afdelingen) 
+internal class Patient(string rijksregisterNummer, string naam, string voornaam, HashSet<string> afdelingen) 
     : Persoon(rijksregisterNummer, naam, voornaam)
 {
-    public HashSet<Afdeling> Afdelingen { get; } = afdelingen;
+    public HashSet<string> Afdelingen { get; } = afdelingen;
 
 }

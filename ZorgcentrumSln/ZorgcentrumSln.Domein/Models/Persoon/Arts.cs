@@ -1,9 +1,9 @@
 ﻿namespace ZorgcentrumSln.Domein.Models.Persoon;
 
-internal class Arts(string rijksregisterNummer, string naam, string voornaam, Specialisatie specialisatie, HashSet<Afdeling> afdelingen)
+internal class Arts(string rijksregisterNummer, string naam, string voornaam, string specialisatie, HashSet<string> afdelingen)
     : Persoon(rijksregisterNummer, naam, voornaam)
 {
-    public Specialisatie Specialisatie { get; } = specialisatie;
+    public string Specialisatie { get; } = specialisatie;
 
-    public HashSet<Afdeling> Afdelingen { get; } = afdelingen;
+    public HashSet<string> Afdelingen { get; } = afdelingen;
 }
