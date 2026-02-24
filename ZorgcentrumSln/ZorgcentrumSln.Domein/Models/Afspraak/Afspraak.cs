@@ -8,11 +8,10 @@ internal abstract class Afspraak(int id, DateTime datumTijdStart, int duurMin, s
     public int DuurMin { get; } = duurMin;
     public string RijksregisterNrPatient { get; } = rijksregisterNrPatient;
     public string RijksregisterNrArts { get; } = rijksregisterNrArts;
-    public Afdeling AfdelingCode { get; } = afdelingCode;
+    public string AfdelingCode { get; } = afdelingCode;
 
     public override string ToString()
     {
-        //TODO: Verander DatumTijdStart naar ""2026-04-01T09"" formaat
         string datumTijdStartString = DatumTijdStart.ToString("yyyy-MM-ddTHH");
 
         return $"{Id};{this.GetType().ToString().ToUpper()};{datumTijdStartString};{DuurMin};{RijksregisterNrPatient};{RijksregisterNrArts};{AfdelingCode}";
