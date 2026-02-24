@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="ZorgcentrumSln.Domein.DomeinController" Collapsed="true">
+    <Position X="15.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DomeinController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZorgcentrumSln.Domein.Models.Afspraak.Afspraak">
+    <Position X="3" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAACBAAgAAAAACAEEAAAAAAAAAAAQAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Afspraak\Afspraak.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZorgcentrumSln.Domein.Models.Afspraak.Consultatie">
+    <Position X="6.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Afspraak\Consultatie.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZorgcentrumSln.Domein.Models.Afspraak.Controle">
+    <Position X="4" Y="3.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAIAEAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Afspraak\Controle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZorgcentrumSln.Domein.Models.Afspraak.Operatie">
+    <Position X="0.75" Y="3.75" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAEAAQA=</HashCode>
+      <FileName>Models\Afspraak\Operatie.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZorgcentrumSln.Domein.Models.Persoon.Arts">
+    <Position X="9" Y="2.75" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Persoon\Arts.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZorgcentrumSln.Domein.Models.Persoon.Patient">
+    <Position X="12" Y="2.75" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Persoon\Patient.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZorgcentrumSln.Domein.Models.Persoon.Persoon">
+    <Position X="11" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAAAAAAAAABAAAAAAAQAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Persoon\Persoon.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
