@@ -2,7 +2,7 @@
 
 public abstract record AfspraakDto(int Id, DateTime DatumTijdStart, int duurMin, string RijksregisterNrPatient, string RijksregisterNrArts, string afdelingCode);
 
-public record ColsultatieAfspraakDto(int Id, DateTime DatumTijdStart, int duurMin, string RijksregisterNrPatient, string RijksregisterNrArts, string afdelingCode) 
+public record ConsultatieAfspraakDto(int Id, DateTime DatumTijdStart, int duurMin, string RijksregisterNrPatient, string RijksregisterNrArts, string afdelingCode) 
     : AfspraakDto(Id, DatumTijdStart, duurMin, RijksregisterNrPatient, RijksregisterNrArts, afdelingCode);
 
 public record ControleAfspraakDto(int Id, DateTime DatumTijdStart, int duurMin, string RijksregisterNrPatient, string RijksregisterNrArts, 

@@ -22,15 +22,16 @@ internal class PersoonDtoFactory
     private static PersoonDto MapToArtsDto(string[] data)
     {
         var persoon = MapToPersoonTuple(data);
-        string specialisatie = data[3];
-        HashSet<string> afdelingen = data[4].Split('|').ToHashSet();
+        string specialisatie = data[4];
+        HashSet<string> afdelingen = data[5].Split('|').ToHashSet();
 
-        return new ArtsPersoonDto(persoon.rijksregisterNummer, persoon.naam, persoon.voornaam, specialisatie, afdelingen);
+        return new ArtsPersoonDto(persoon.rijksregisterNummer, persoon.naam, persoon.voornaam, data[3], specialisatie, afdelingen);
     }
     private static PersoonDto MapToPatientDto(string[] data)
     {
         var persoon = MapToPersoonTuple(data);
-        HashSet<string> afdelingen = data[4].Split('|').ToHashSet();
+
+        HashSet<string> afdelingen = data[3].Split('|').ToHashSet();
 
         return new PatientPersoonDto(persoon.rijksregisterNummer, persoon.naam, persoon.voornaam, afdelingen);
     }

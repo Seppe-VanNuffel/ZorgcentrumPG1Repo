@@ -9,7 +9,7 @@ internal class PersoonRelatedFactories
     {
         return persoon switch
         {
-            Arts arts => new ArtsPersoonDto(arts.RijksregisterNummer, arts.Naam, arts.Voornaam, arts.Specialisatie, arts.Afdelingen),
+            Arts arts => new ArtsPersoonDto(arts.RijksregisterNummer, arts.Naam, arts.Voornaam, arts.RIZIV, arts.Specialisatie, arts.Afdelingen),
             Patient patient => new PatientPersoonDto(patient.RijksregisterNummer, patient.Naam, patient.Voornaam, patient.Afdelingen),
             _ => throw new NotImplementedException()
         };
@@ -19,8 +19,8 @@ internal class PersoonRelatedFactories
     {
         return persoonDto switch
         {
-            ArtsPersoonDto APD => new Arts(APD.RijksregisterNummer, APD.Naam, APD.Voornaam, APD.Specialisate, APD.Afdelingen),
-            PatientPersoonDto PPD => new Patient(PPD.RijksregisterNummer, PPD.Naam, PPD.Voornaam, PPD.afdelingen),
+            ArtsPersoonDto APD => new Arts(APD.RijksregisterNummer, APD.Naam, APD.Voornaam, APD.RIZIV, APD.Specialisate, APD.Afdelingen),
+            PatientPersoonDto PPD => new Patient(PPD.RijksregisterNummer, PPD.Naam, PPD.Voornaam, PPD.Afdelingen),
             _ => throw new NotImplementedException()
         };
     }

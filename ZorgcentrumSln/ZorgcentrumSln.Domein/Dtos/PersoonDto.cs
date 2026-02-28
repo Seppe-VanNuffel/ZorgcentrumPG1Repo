@@ -2,6 +2,6 @@
 
 public abstract record PersoonDto(string RijksregisterNummer, string Naam, string Voornaam);
 
-public record PatientPersoonDto(string RijksregisterNummer, string Naam, string Voornaam, HashSet<string> afdelingen) : PersoonDto(RijksregisterNummer, Naam, Voornaam);
+public record PatientPersoonDto(string RijksregisterNummer, string Naam, string Voornaam, HashSet<string> Afdelingen) : PersoonDto(RijksregisterNummer, Naam, Voornaam);
 
-public record ArtsPersoonDto(string RijksregisterNummer, string Naam, string Voornaam, string Specialisate, HashSet<string> Afdelingen) : PersoonDto(RijksregisterNummer, Naam, Voornaam);
+public record ArtsPersoonDto(string RijksregisterNummer, string Naam, string Voornaam, string RIZIV, string Specialisate, HashSet<string> Afdelingen) : PersoonDto(RijksregisterNummer, Naam, Voornaam);

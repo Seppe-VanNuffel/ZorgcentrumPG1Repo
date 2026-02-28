@@ -10,7 +10,7 @@ public class PersoonRepositoryBestand : IPersoonRepositoryRead
 
     public PersoonRepositoryBestand(string padNaarArtsBestand, string padNaarPatientBestand)
     {
-        _PersonenInfo = BestandsVerwerking.LeesBestanden(padNaarArtsBestand, padNaarPatientBestand);
+        _PersonenInfo = BestandsVerwerking.LeesPersoonBestanden(padNaarArtsBestand, padNaarPatientBestand);
     }
 
     public IEnumerable<PersoonDto> GetAll()
