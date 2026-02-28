@@ -1,9 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using ZorgcentrumSln.Domein.Dtos;
 
 namespace ZorgcentrumSln.Domein.Interfaces;
 
-internal interface IAfspraakRepository
+public interface IAfspraakRepositoryRead
 {
+    // R operaties
+    AfspraakDto GetById(Guid id);
+    IEnumerable<AfspraakDto> GetAll();
+}
+
+public interface IAfspraakRepositoryCRUD : IAfspraakRepositoryRead
+{
+    void Insert(AfspraakDto product);
+    void Update(AfspraakDto product);
+    void Delete(Guid id);
 }
