@@ -2,4 +2,5 @@
   <Project Path="ZorgcentrumSln.Domein/ZorgcentrumSln.Domein.csproj" Id="d53e8e47-4ddb-4c94-a1b4-b5611cf91a90" />
   <Project Path="ZorgcentrumSln.Persistentie/ZorgcentrumSln.Persistentie.csproj" Id="1487be28-dd51-45e7-bfeb-93e4cc18ec45" />
   <Project Path="ZorgcentrumSln.Presentatie/ZorgcentrumSln.Presentatie.csproj" Id="594064cd-2aa5-46db-8ae9-c3071f80ed0c" />
+  <Project Path="ZorgcentrumSln.Startup/ZorgcentrumSln.Startup.csproj" Id="217e5f76-8537-422c-99fa-f4e914a4cc82" />
 </Solution>

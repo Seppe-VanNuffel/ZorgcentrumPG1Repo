@@ -15,10 +15,10 @@ public class PersoonRepositoryBestand : IPersoonRepositoryRead
 
     public IEnumerable<PersoonDto> GetAll()
     {
-        throw new NotImplementedException();
+        return _PersonenInfo;
     }
 
-    public PersoonDto GetById(Guid id)
+    public PersoonDto GetById(string id)
     {
         throw new NotImplementedException();
     }
