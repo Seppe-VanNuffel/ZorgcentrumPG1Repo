@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ZorgcentrumSln.Startup": {
+      "commandName": "Project",
+      "workingDirectory": "$(SolutionDir)"
+    }
+  }
+}
