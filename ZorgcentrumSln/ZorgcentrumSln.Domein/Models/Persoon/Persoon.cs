@@ -35,4 +35,13 @@ internal abstract class Persoon(string rijksregisterNummer, string naam, string 
 
     public string Voornaam { get; } = voornaam;
 
+    public override bool Equals(object? obj)
+    {
+        return obj is Persoon persoon && persoon.RijksregisterNummer == RijksregisterNummer && persoon.GetType().Name == GetType().Name;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(RijksregisterNummer, GetType().Name);
+    }
 }
