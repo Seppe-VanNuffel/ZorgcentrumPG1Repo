@@ -8,9 +8,19 @@ internal abstract class Persoon(string rijksregisterNummer, string naam, string 
         }
     } = rijksregisterNummer;
 
-    public string Naam { get; } = naam;
+    public string Naam { get; 
+        init
+        {
+            field = string.IsNullOrWhiteSpace(value) ? throw new ArgumentNullException(nameof(naam), "Naam mag niet null of leeg zijn") : value;
+        }
+    } = naam;
 
-    public string Voornaam { get; } = voornaam;
+    public string Voornaam { get;
+        init
+        {
+            field = string.IsNullOrWhiteSpace(value) ? throw new ArgumentNullException(nameof(voornaam), "Voornaam mag niet null of leeg zijn") : value;
+        }
+    } = voornaam;
 
     public override bool Equals(object? obj)
     {
@@ -46,9 +56,13 @@ internal abstract class Persoon(string rijksregisterNummer, string naam, string 
             else
                 throw new ArgumentException("Het nummer is niet correct");
         }
-        catch (Exception)
+        catch (ArgumentException e)
         {
             throw;
+        }
+        catch (Exception e)
+        {
+            throw new ArgumentException("Het nummer is niet correct", e);
         }
     }
 }
