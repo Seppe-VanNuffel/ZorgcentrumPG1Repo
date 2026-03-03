@@ -185,7 +185,16 @@ public class UserInputHulpKlasse
             try
             {
                 Console.Write($"{vraag}\n");
-                ant = int.Parse(Console.ReadLine());
+                try
+                {
+                    ant = int.Parse(Console.ReadLine() ?? throw new ArgumentException("Dit is geen geldig getal"));
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    continue;
+                }
+
                 if (ant < min || ant > max)
                 {
                     Console.WriteLine($"Keuze moet in het interval [{min},{max}] liggen");
