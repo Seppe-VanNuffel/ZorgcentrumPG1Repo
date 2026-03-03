@@ -1,6 +1,6 @@
 ﻿using ZorgcentrumSln.Domein.Dtos;
 
-namespace ZorgcentrumSln.Persistentie.File.Factories;
+namespace ZorgcentrumSln.PersistentieBestand.Factories;
 
 internal class PersoonDtoFactory
 {

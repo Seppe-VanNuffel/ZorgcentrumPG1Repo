@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ZorgcentrumSln.Domein\ZorgcentrumSln.Domein.csproj" />
-    <ProjectReference Include="..\ZorgcentrumSln.Persistentie\ZorgcentrumSln.Persistentie.csproj" />
+    <ProjectReference Include="..\ZorgcentrumSln.Persistentie\ZorgcentrumSln.PersistentieBestand.csproj" />
     <ProjectReference Include="..\ZorgcentrumSln.Presentatie\ZorgcentrumSln.Presentatie.csproj" />
   </ItemGroup>
 
