@@ -4,30 +4,7 @@ internal abstract class Persoon(string rijksregisterNummer, string naam, string 
 {
     public string RijksregisterNummer { get => field; 
         init {
-            string nummer = RijksregisterNummer.Trim().Replace(".", "").Replace("-", "");
-
-            if(nummer.Length != 11)
-            {
-                throw new ArgumentException("Het nummer is te kort of te lang", nameof(rijksregisterNummer));
-            }
-
-            string controleGetal = nummer[9..];
-            string getal = nummer[..8];
-
-            try
-            {
-                long longGetal = long.Parse(getal);
-                int intControleGetal = int.Parse(controleGetal);
-
-                if(97 - (longGetal % 97) == intControleGetal)
-                {
-                    field = value;
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            field = CheckRijksregisterNummer(value);
         }
     } = rijksregisterNummer;
 
@@ -43,5 +20,35 @@ internal abstract class Persoon(string rijksregisterNummer, string naam, string 
     public override int GetHashCode()
     {
         return HashCode.Combine(RijksregisterNummer, GetType().Name);
+    }
+
+    internal static string CheckRijksregisterNummer(string rijksregisterNummer)
+    {
+        string nummer = rijksregisterNummer.Trim().Replace(".", "").Replace("-", "");
+
+        if (nummer.Length != 11)
+        {
+            throw new ArgumentOutOfRangeException(nameof(rijksregisterNummer), "Het nummer is te kort of te lang");
+        }
+
+        string controleGetal = nummer[9..];
+        string getal = nummer[..9];
+
+        try
+        {
+            long longGetal = long.Parse(getal);
+            int intControleGetal = int.Parse(controleGetal);
+
+            if (97 - (longGetal % 97) == intControleGetal)
+            {
+                return rijksregisterNummer;
+            }
+            else
+                throw new ArgumentException("Het nummer is niet correct");
+        }
+        catch (Exception)
+        {
+            throw;
+        }
     }
 }
