@@ -1,8 +1,8 @@
 ﻿using System.Reflection.Metadata.Ecma335;
 using ZorgcentrumSln.Domein.Dtos;
-using ZorgcentrumSln.Persistentie.File.Factories;
+using ZorgcentrumSln.Persistentie.Factories;
 
-namespace ZorgcentrumSln.Persistentie.File.BestandsBeheer;
+namespace ZorgcentrumSln.Persistentie.BestandsBeheer;
 
 internal static class BestandsVerwerking
 {

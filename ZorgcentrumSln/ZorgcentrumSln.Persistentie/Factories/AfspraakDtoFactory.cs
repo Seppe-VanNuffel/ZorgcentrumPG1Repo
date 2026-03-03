@@ -1,6 +1,6 @@
 ﻿using ZorgcentrumSln.Domein.Dtos;
 
-namespace ZorgcentrumSln.Persistentie.File.Factories;
+namespace ZorgcentrumSln.Persistentie.Factories;
 
 internal class AfspraakDtoFactory
 {

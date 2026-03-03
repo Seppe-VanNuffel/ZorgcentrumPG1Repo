@@ -1,8 +1,8 @@
 ﻿using ZorgcentrumSln.Domein.Dtos;
 using ZorgcentrumSln.Domein.Interfaces;
-using ZorgcentrumSln.Persistentie.File.BestandsBeheer;
+using ZorgcentrumSln.Persistentie.BestandsBeheer;
 
-namespace ZorgcentrumSln.Persistentie.File;
+namespace ZorgcentrumSln.Persistentie;
 
 public class PersoonRepositoryBestand : IPersoonRepositoryRead
 {

@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Database\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\ZorgcentrumSln.Domein\ZorgcentrumSln.Domein.csproj" />
   </ItemGroup>
 
