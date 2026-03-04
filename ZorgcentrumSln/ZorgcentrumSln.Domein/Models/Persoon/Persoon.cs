@@ -92,20 +92,24 @@ internal abstract class Persoon
             long longGetal = long.Parse(getal);
             int intControleGetal = int.Parse(controleGetal);
 
-            if (97 - (longGetal % 97) == intControleGetal)
+            if ((97 - (longGetal % 97)) == intControleGetal)
             {
                 return rijksregisterNummer;
             }
             else
+            {
+                longGetal = long.Parse("2" + getal);
+                if ((97 - (longGetal % 97)) == intControleGetal)
+                {
+                    return rijksregisterNummer;
+                }
+
                 throw new ArgumentException("Het nummer is niet correct");
-        }
-        catch (ArgumentException e)
-        {
-            throw;
+            }
         }
         catch (Exception e)
         {
-            throw new ArgumentException("Het nummer is niet correct", e);
+            throw new PersoonException("Het nummer is niet correct", e);
         }
     }
 }
