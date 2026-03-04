@@ -1,19 +1,37 @@
-﻿namespace ZorgcentrumSln.Domein.Models.Persoon;
+﻿using ZorgcentrumSln.Domein.Exceptions;
 
-internal class Patient(string rijksregisterNummer, string naam, string voornaam, HashSet<string> afdelingen) 
-    : Persoon(rijksregisterNummer, naam, voornaam)
+namespace ZorgcentrumSln.Domein.Models.Persoon;
+
+internal class Patient : Persoon
 {
+    public Patient(string rijksregisterNummer, string naam, string voornaam, HashSet<string> afdelingen) : base(rijksregisterNummer, naam, voornaam)
+    {
+        Afdelingen = afdelingen;
+    }
+
     public HashSet<string> Afdelingen { get;
         init
         {
             foreach (var item in value)
             {
-                if (string.IsNullOrWhiteSpace(item))
+                try
                 {
-                    throw new ArgumentNullException(nameof(item), "alle waarden in de collectie mogen niet null of leeg zijn");
+                    if (string.IsNullOrWhiteSpace(item))
+                    {
+                        throw new ArgumentNullException(nameof(value), "Alle waarden in de collectie mogen niet null of leeg zijn");
+                    }
+                    else if (!AfdelingCodes.Contains(item.Replace("}", "").Replace("{", "")))
+                    {
+                        throw new ArgumentOutOfRangeException(nameof(value), "Dit is geen geldige waarde");
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw new PersoonException("Er liep iets fout met het maken van deze persoon", e);
                 }
             }
-        }
-    } = afdelingen;
 
+            field = value;
+        }
+    }
 }

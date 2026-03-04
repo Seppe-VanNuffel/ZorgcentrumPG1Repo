@@ -28,7 +28,7 @@ internal class Specialisatie(string code)
             "NEUR" => "Neurologie",
             "NUCL" => "Nucleaire geneeskunde",
             "ONCO" => "Medische oncologie",
-            "ORL" => "Oto-Rhino-Laryngologie",
+            "ORL"  => "Oto-Rhino-Laryngologie",
             "OPHT" => "Oftalmologie",
             "ORTH" => "Orthopedische heelkunde",
             "PAAN" => "Pathologische anatomie",

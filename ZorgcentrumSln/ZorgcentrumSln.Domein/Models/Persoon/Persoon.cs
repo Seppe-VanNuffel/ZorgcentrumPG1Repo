@@ -1,26 +1,69 @@
-﻿namespace ZorgcentrumSln.Domein.Models.Persoon;
+﻿using ZorgcentrumSln.Domein.Exceptions;
 
-internal abstract class Persoon(string rijksregisterNummer, string naam, string voornaam)
+namespace ZorgcentrumSln.Domein.Models.Persoon;
+
+internal abstract class Persoon
 {
+    public Persoon(string rijksregisterNummer, string naam, string voornaam)
+    {
+        RijksregisterNummer = rijksregisterNummer;
+        Naam = naam;
+        Voornaam = voornaam;
+    }
+
+    protected static List<string> AfdelingCodes = [
+        "PNEC",
+        "CARD",
+        "GAST",
+        "NEUR",
+        "ORTH",
+        "GERC",
+        "ONCO",
+        "PAAN",
+        "RADI",
+        "URGE"
+        ];
+
     public string RijksregisterNummer { get => field; 
         init {
-            field = CheckRijksregisterNummer(value);
+            try
+            {
+                field = CheckRijksregisterNummer(value);
+            }
+            catch (Exception e)
+            {
+                throw new PersoonException("Er liep iets fout met het maken van deze persoon", e);
+            }
         }
-    } = rijksregisterNummer;
+    }
 
     public string Naam { get; 
         init
         {
-            field = string.IsNullOrWhiteSpace(value) ? throw new ArgumentNullException(nameof(naam), "Naam mag niet null of leeg zijn") : value;
+            try
+            {
+                field = string.IsNullOrWhiteSpace(value) ? throw new ArgumentNullException(nameof(value), "Naam mag niet null of leeg zijn") : value;
+            }
+            catch (Exception e)
+            {
+                throw new PersoonException("Er liep iets fout met het maken van deze persoon", e);
+            }
         }
-    } = naam;
+    }
 
     public string Voornaam { get;
         init
         {
-            field = string.IsNullOrWhiteSpace(value) ? throw new ArgumentNullException(nameof(voornaam), "Voornaam mag niet null of leeg zijn") : value;
+            try
+            {
+                field = string.IsNullOrWhiteSpace(value) ? throw new ArgumentNullException(nameof(value), "Voornaam mag niet null of leeg zijn") : value;
+            }
+            catch (Exception e)
+            {
+                throw new PersoonException("Er liep iets fout met het maken van deze persoon", e);
+            }
         }
-    } = voornaam;
+    }
 
     public override bool Equals(object? obj)
     {
