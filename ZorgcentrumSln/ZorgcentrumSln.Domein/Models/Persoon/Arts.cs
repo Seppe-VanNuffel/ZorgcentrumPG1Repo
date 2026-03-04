@@ -11,7 +11,7 @@ internal class Arts : Persoon
         Afdelingen = afdelingen;
     }
 
-    private static List<string> SpecialisatieCodes = [
+    private static readonly List<string> SpecialisatieCodes = [
         "ANES",
         "BIOL",
         "CARD",

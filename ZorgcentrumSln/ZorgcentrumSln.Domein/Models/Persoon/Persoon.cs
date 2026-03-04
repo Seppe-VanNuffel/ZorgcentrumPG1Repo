@@ -11,7 +11,7 @@ internal abstract class Persoon
         Voornaam = voornaam;
     }
 
-    protected static List<string> AfdelingCodes = [
+    protected static readonly List<string> AfdelingCodes = [
         "PNEC",
         "CARD",
         "GAST",
