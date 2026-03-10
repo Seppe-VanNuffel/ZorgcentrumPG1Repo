@@ -16,13 +16,24 @@ internal class Patient : Persoon
             {
                 try
                 {
+                    string line;
                     if (string.IsNullOrWhiteSpace(item))
                     {
                         throw new ArgumentNullException(nameof(value), "Alle waarden in de collectie mogen niet null of leeg zijn");
                     }
-                    else if (!AfdelingCodes.Contains(item.Replace("}", "").Replace("{", "")))
+                    else if (!AfdelingCodes.Contains(line = item.Replace("}", "").Replace("{", "")))
                     {
-                        throw new ArgumentOutOfRangeException(nameof(value), "Dit is geen geldige waarde");
+                        var data = line.Split(',');
+
+                        foreach (var code in data)
+                        {
+                            if(AfdelingCodes.Contains(code))
+                            {
+                                continue;
+                            }
+
+                            throw new ArgumentOutOfRangeException(nameof(value), $"Dit is geen geldige waarde {item}");
+                        }
                     }
                 }
                 catch (Exception e)

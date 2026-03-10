@@ -14,7 +14,7 @@ internal abstract class Persoon
     protected static readonly List<string> AfdelingCodes = [
         "PNEC",
         "CARD",
-        "GAST",
+        "GASTG",
         "NEUR",
         "ORTH",
         "GERC",
@@ -81,7 +81,7 @@ internal abstract class Persoon
 
         if (nummer.Length != 11)
         {
-            throw new ArgumentOutOfRangeException(nameof(rijksregisterNummer), "Het nummer is te kort of te lang");
+            throw new ArgumentOutOfRangeException(nameof(rijksregisterNummer), $"Het nummer {rijksregisterNummer} is te kort of te lang");
         }
 
         string controleGetal = nummer[9..];
@@ -104,12 +104,12 @@ internal abstract class Persoon
                     return rijksregisterNummer;
                 }
 
-                throw new ArgumentException("Het nummer is niet correct");
+                throw new ArgumentException($"Het nummer {rijksregisterNummer} is niet correct");
             }
         }
         catch (Exception e)
         {
-            throw new PersoonException("Het nummer is niet correct", e);
+            throw new PersoonException("Het Rijksregisternummer is niet correct", e);
         }
     }
 }

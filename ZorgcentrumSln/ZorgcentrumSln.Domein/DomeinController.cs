@@ -18,7 +18,25 @@ public class DomeinController(IPersoonRepositoryRead pRR, IAfspraakRepositoryRea
 
         foreach (var item in persoonInfo)
         {
-            personen.Add(PersoonRelatedFactories.CreatePersoonFromPersoonDto(item));
+            try
+            {
+                personen.Add(PersoonRelatedFactories.CreatePersoonFromPersoonDto(item));
+            }
+            catch (Exception e)
+            {
+                if (e.InnerException?.InnerException != null)
+                {
+                    Console.WriteLine($"FullError: {e.Message}, {e.InnerException.Message}, {e.InnerException.InnerException.Message}");
+                }
+                else if(e.InnerException != null && e.InnerException?.InnerException == null)
+                {
+                    Console.WriteLine($"InnerError: {e.Message}, {e.InnerException.Message}");
+                }
+                else
+                {
+                    Console.WriteLine($"Error: {e.Message}");
+                }
+            }
         }
 
         List<PersoonDto> persoonDtos = [];

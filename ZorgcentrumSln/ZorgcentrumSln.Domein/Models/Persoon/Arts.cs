@@ -51,7 +51,7 @@ internal class Arts : Persoon
             {
                 if (string.IsNullOrWhiteSpace(value))
                 {
-                    throw new ArgumentNullException(nameof(value), "Specialisatie niet null of leeg zijn");
+                    throw new ArgumentNullException(nameof(value), $"RIZIV {value} niet null of leeg zijn");
                 }
             }
             catch (Exception e)
@@ -70,11 +70,11 @@ internal class Arts : Persoon
             {
                 if (string.IsNullOrWhiteSpace(value))
                 {
-                    throw new ArgumentNullException(nameof(value), "Specialisatie niet null of leeg zijn");
+                    throw new ArgumentNullException(nameof(value), "Specialisatie  niet null of leeg zijn");
                 }
                 else if (!SpecialisatieCodes.Contains(value.Replace("}", "").Replace("{", "")))
                 {
-                    throw new ArgumentOutOfRangeException(nameof(value), "Dit is geen geldige waarde");
+                    throw new ArgumentOutOfRangeException(nameof(value), $"Dit is geen geldige waarde {value}");
                 }
             }
             catch (Exception e)
@@ -101,7 +101,7 @@ internal class Arts : Persoon
                         }
                         else if (!AfdelingCodes.Contains(item.Replace("}", "").Replace("{", "")))
                         {
-                            throw new ArgumentOutOfRangeException(nameof(value), "Dit is geen geldige waarde");
+                            throw new ArgumentOutOfRangeException(nameof(value), $"Dit is geen geldige waarde {item}");
                         }
                     }
                     catch (Exception e)
