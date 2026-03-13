@@ -2,7 +2,8 @@
   <Project Path="ZorgcentrumSln.CustomMethods/ZorgcentrumSln.CustomMethods.csproj" Id="5ab60586-1ae2-4d84-8669-87fe11c6a66b" />
   <Project Path="ZorgcentrumSln.Domein.Tests/ZorgcentrumSln.Domein.Tests.csproj" Id="59f46492-af45-41c8-a1bc-9b31d4149fa2" />
   <Project Path="ZorgcentrumSln.Domein/ZorgcentrumSln.Domein.csproj" Id="d53e8e47-4ddb-4c94-a1b4-b5611cf91a90" />
-  <Project Path="ZorgcentrumSln.Persistentie/ZorgcentrumSln.PersistentieBestand.csproj" Id="1487be28-dd51-45e7-bfeb-93e4cc18ec45" />
+  <Project Path="ZorgcentrumSln.Persistentie.DataBase/ZorgcentrumSln.Persistentie.DataBase.csproj" Id="87bf9f07-69df-4830-9567-93304dab4962" />
+  <Project Path="ZorgcentrumSln.Persistentie/ZorgcentrumSln.Persistentie.Bestand.csproj" Id="1487be28-dd51-45e7-bfeb-93e4cc18ec45" />
   <Project Path="ZorgcentrumSln.Presentatie/ZorgcentrumSln.Presentatie.csproj" Id="594064cd-2aa5-46db-8ae9-c3071f80ed0c" />
   <Project Path="ZorgcentrumSln.Startup/ZorgcentrumSln.Startup.csproj" Id="217e5f76-8537-422c-99fa-f4e914a4cc82" />
 </Solution>

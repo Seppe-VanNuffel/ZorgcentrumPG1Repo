@@ -6,9 +6,9 @@ using ZorgcentrumSln.Domein.Models.Persoon;
 
 namespace ZorgcentrumSln.Domein;
 
-public class DomeinController(IPersoonRepositoryRead pRR, IAfspraakRepositoryRead aRR)
+public class DomeinController(IPersoonRepositoryBestandRead pRR, IAfspraakRepositoryRead aRR)
 {
-    private IPersoonRepositoryRead _pRR = pRR;
+    private IPersoonRepositoryBestandRead _pRR = pRR;
     private IAfspraakRepositoryRead _aRR = aRR;
 
     public List<PersoonDto> GetAllPersonen()
