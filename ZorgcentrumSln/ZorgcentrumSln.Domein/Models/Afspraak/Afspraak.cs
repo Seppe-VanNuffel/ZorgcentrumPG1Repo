@@ -1,15 +1,100 @@
-﻿namespace ZorgcentrumSln.Domein.Models.Afspraak;
+﻿using ZorgcentrumSln.Domein.Exceptions;
+using ZorgcentrumSln.Domein.Models.ZorgCentrumMotherClass;
 
-internal abstract class Afspraak(int id, DateTime datumTijdStart, int duurMin, string rijksregisterNrPatient, string rijksregisterNrArts, string afdelingCode)
+namespace ZorgcentrumSln.Domein.Models.Afspraak;
+
+internal abstract class Afspraak : ZorgCentrumObj
 {
     //AfspraakId;Type;DatumTijdStart;DuurMin;RijksregisterNrPatiënt;RijksregisterNrArts;AfdelingCode; Extra1;Extra2
-    public int Id { get; } = id;
-    public DateTime DatumTijdStart { get; } = datumTijdStart;
-    public int DuurMin { get; } = duurMin;
-    public string RijksregisterNrPatient { get; } = rijksregisterNrPatient;
-    public string RijksregisterNrArts { get; } = rijksregisterNrArts;
-    public string AfdelingCode { get; } = afdelingCode;
+    public Afspraak(int id, DateTime datumTijdStart, int duurMin, string rijksregisterNrPatient, string rijksregisterNrArts, string afdelingCode)
+    {
+        Id = id;
+        DatumTijdStart = datumTijdStart;
+        DuurMin = duurMin;
+        RijksregisterNrPatient = rijksregisterNrPatient;
+        RijksregisterNrArts = rijksregisterNrArts;
+        AfdelingCode = afdelingCode;
+    }
 
+    public int Id { get; init; }
+    public DateTime DatumTijdStart { get; init; }
+    public virtual int DuurMin { get; init; }
+    public string RijksregisterNrPatient 
+    { 
+        get; init
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    throw new ArgumentException("waarde is leeg of null");
+                }
+                else
+                {
+                    if((RijksregisterNrArts != null && RijksregisterNrArts != value) || RijksregisterNrArts == null)
+                    {
+                        field = value;
+                    }
+                    else
+                        throw new ArgumentException("Hetzelfde rijksregister mag niet bij patient en arts staan");
+                }
+            }
+            catch (Exception e)
+            {
+                throw new AfspraakException("Er liep iets mis bij het maken van de afspraak", e);
+            }
+        } 
+    }
+    public string RijksregisterNrArts
+    {
+        get; init
+        {
+            try 
+            { 
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    throw new ArgumentException("waarde is leeg of null");
+                }
+                else
+                {
+                    if ((RijksregisterNrArts != null && RijksregisterNrArts != value) || RijksregisterNrPatient == null)
+                    {
+                        field = value;
+                    }
+                    else
+                        throw new ArgumentException("Hetzelfde rijksregister mag niet bij patient en arts staan");
+                }
+            }
+            catch (Exception e)
+            {
+                throw new AfspraakException("Er liep iets mis bij het maken van de afspraak", e);
+            }
+        }
+    }
+    public string AfdelingCode
+    {
+        get; init
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    throw new ArgumentException("waarde is leeg of null");
+                }
+                else
+                {
+                    if (AfdelingCodes.Contains(value))
+                        field = value;
+                    else
+                        throw new ArgumentOutOfRangeException(nameof(value), $"Deze afdeling code {value} zit niet in de lijst van codes");
+                }
+            }
+            catch (Exception e)
+            {
+                throw new AfspraakException("Er liep iets mis bij het maken van de afspraak", e);
+            }
+        }
+    }
     public override bool Equals(object? obj)
     {
         return obj is Afspraak afspraak &&

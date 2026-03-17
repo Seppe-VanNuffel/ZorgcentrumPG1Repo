@@ -65,7 +65,25 @@ public class DomeinController(IPersoonRepositoryBestandRead pRR, IAfspraakReposi
 
         foreach (var item in AfspraakInfo)
         {
-            Afspraken.Add(AfspraakRelatedFactories.CreateAfspraakFromAfspraakDto(item));
+            try
+            {
+                Afspraken.Add(AfspraakRelatedFactories.CreateAfspraakFromAfspraakDto(item));
+            }
+            catch (Exception e)
+            {
+                if (e.InnerException?.InnerException != null)
+                {
+                    Console.WriteLine($"FullError: {e.Message}, {e.InnerException.Message}, {e.InnerException.InnerException.Message}");
+                }
+                else if (e.InnerException != null && e.InnerException?.InnerException == null)
+                {
+                    Console.WriteLine($"InnerError: {e.Message}, {e.InnerException.Message}");
+                }
+                else
+                {
+                    Console.WriteLine($"Error: {e.Message}");
+                }
+            }
         }
 
         List<AfspraakDto> AfspraakDtos = [];
