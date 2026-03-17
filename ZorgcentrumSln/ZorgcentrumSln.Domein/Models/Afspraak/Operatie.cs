@@ -14,10 +14,10 @@ internal class Operatie : Afspraak
     {
         get => base.DuurMin; init
         {
-            if (value >= 10)
+            if (value >= 30)
                 base.DuurMin = value;
             else
-                throw new AfspraakException("Er liep iets mis bij het maken van de afspraak", new ArgumentOutOfRangeException(nameof(value), "De minimum duur is 10 minuten"));
+                throw new AfspraakException("Er liep iets mis bij het maken van de afspraak", new ArgumentOutOfRangeException(nameof(value), "De minimum duur is 30 minuten"));
         }
     }
 
@@ -33,7 +33,16 @@ internal class Operatie : Afspraak
         }
     }
 
-    public int AantalMinutenOpVoorhand { get; }
+    public int AantalMinutenOpVoorhand
+    {
+        get => base.DuurMin; init
+        {
+            if (value >= 30)
+                base.DuurMin = value;
+            else
+                throw new AfspraakException("Er liep iets mis bij het maken van de afspraak", new ArgumentOutOfRangeException(nameof(value), "De minimum duur is 30 minuten"));
+        }
+    }
 
     public override string ToString()
     {

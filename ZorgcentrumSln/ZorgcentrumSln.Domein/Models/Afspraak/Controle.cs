@@ -1,4 +1,5 @@
-﻿
+﻿using ZorgcentrumSln.Domein.Exceptions;
+
 namespace ZorgcentrumSln.Domein.Models.Afspraak;
 
 internal class Controle : Afspraak
@@ -8,7 +9,16 @@ internal class Controle : Afspraak
         Referentie = referentie;
     }
 
-    public int Referentie { get; init; }
+    public int Referentie { get; 
+        init
+        {
+            if (value >= 0)
+                field = value;
+            else
+                throw new AfspraakException("Er liep iets mis bij het maken van deze afspraak", new ArgumentOutOfRangeException("value", "Nummer mag niet onder de nul zijn"));
+        } 
+    
+    }
 
     public override string ToString()
     {

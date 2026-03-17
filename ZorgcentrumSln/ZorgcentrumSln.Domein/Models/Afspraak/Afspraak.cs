@@ -57,7 +57,7 @@ internal abstract class Afspraak : ZorgCentrumObj
                 }
                 else
                 {
-                    if ((RijksregisterNrArts != null && RijksregisterNrArts != value) || RijksregisterNrPatient == null)
+                    if ((RijksregisterNrPatient != null && RijksregisterNrPatient != value) || RijksregisterNrPatient == null)
                     {
                         field = value;
                     }
