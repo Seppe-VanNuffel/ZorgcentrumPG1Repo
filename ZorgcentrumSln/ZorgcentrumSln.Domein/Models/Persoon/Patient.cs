@@ -9,40 +9,8 @@ internal class Patient : Persoon
         Afdelingen = afdelingen;
     }
 
-    public HashSet<string> Afdelingen { get;
-        init
-        {
-            foreach (var item in value)
-            {
-                try
-                {
-                    string line;
-                    if (string.IsNullOrWhiteSpace(item))
-                    {
-                        throw new ArgumentNullException(nameof(value), "Alle waarden in de collectie mogen niet null of leeg zijn");
-                    }
-                    else if (!AfdelingCodes.Contains(line = item.Replace("}", "").Replace("{", "")))
-                    {
-                        var data = line.Split(',');
-
-                        foreach (var code in data)
-                        {
-                            if(AfdelingCodes.Contains(code))
-                            {
-                                continue;
-                            }
-
-                            throw new ArgumentOutOfRangeException(nameof(value), $"Dit is geen geldige waarde {item}");
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    throw new PersoonException("Er liep iets fout met het maken van deze persoon", e);
-                }
-            }
-
-            field = value;
-        }
+    public HashSet<string> Afdelingen
+    {
+        get; init => field = CheckAfdelingCodes(value).ToHashSet();
     }
 }

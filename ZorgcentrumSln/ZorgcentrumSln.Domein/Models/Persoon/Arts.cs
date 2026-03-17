@@ -1,4 +1,5 @@
 ﻿using ZorgcentrumSln.Domein.Exceptions;
+using static System.Net.WebRequestMethods;
 
 namespace ZorgcentrumSln.Domein.Models.Persoon;
 
@@ -49,9 +50,15 @@ internal class Arts : Persoon
         {
             try
             {
+                string nummer;
                 if (string.IsNullOrWhiteSpace(value))
                 {
                     throw new ArgumentNullException(nameof(value), $"RIZIV {value} niet null of leeg zijn");
+                }
+                else if ((nummer = value.Replace("-", "")).Length == 11)
+                {
+                    // Controleer of het nummer alleen cijfers bevat
+                    long.Parse(nummer);
                 }
             }
             catch (Exception e)
@@ -86,32 +93,11 @@ internal class Arts : Persoon
         }
     }
 
-    public HashSet<string> Afdelingen { get;
-        init
-        {
-            foreach (var item in value)
-            {
-                if (string.IsNullOrWhiteSpace(item))
-                {
-                    try
-                    {
-                        if (string.IsNullOrWhiteSpace(item))
-                        {
-                            throw new ArgumentNullException(nameof(value), "Alle waarden in de collectie mogen niet null of leeg zijn");
-                        }
-                        else if (!AfdelingCodes.Contains(item.Replace("}", "").Replace("{", "")))
-                        {
-                            throw new ArgumentOutOfRangeException(nameof(value), $"Dit is geen geldige waarde {item}");
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        throw new PersoonException("Er liep iets fout met het maken van deze persoon", e);
-                    }
-                }
-            }
-
-            field = value;
-        }
+    public HashSet<string> Afdelingen { 
+        get; init => field = CheckAfdelingCodes(value).ToHashSet();
     }
+
+    public override bool Equals(object? obj) => obj is Arts arts && base.Equals(arts) && arts.RIZIV == RIZIV;
+
+    public override int GetHashCode() => HashCode.Combine(base.GetHashCode(), RIZIV);
 }

@@ -4,7 +4,7 @@ using ZorgcentrumSln.PersistentieBestand.BestandsBeheer;
 
 namespace ZorgcentrumSln.PersistentieBestand;
 
-public class PersoonRepositoryBestand : IPersoonRepositoryRead
+public class PersoonRepositoryBestand : IPersoonRepositoryBestandRead
 {
     private List<PersoonDto> _PersonenInfo;
 

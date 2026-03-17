@@ -1,4 +1,5 @@
-﻿using ZorgcentrumSln.Domein.Models.Persoon;
+﻿using ZorgcentrumSln.Domein.Exceptions;
+using ZorgcentrumSln.Domein.Models.Persoon;
 
 namespace ZorgcentrumSln.Domein.Tests.Models;
 
@@ -14,7 +15,7 @@ public class ArtsTest
         Assert.Equal("KHALID", persoon.Voornaam);
         Assert.Equal("1-79010-52-100", persoon.RIZIV);
         Assert.Equal("{ANES}", persoon.Specialisatie);
-        Assert.Equal(["{ORTH}"], persoon.Afdelingen);
+        Assert.Equal(["ORTH"], persoon.Afdelingen);
     }
 
     [Theory]
@@ -25,9 +26,9 @@ public class ArtsTest
     [InlineData("57.04.30-901.06")]
     public void TEST_RIJKSREGISTERNUMMER(string rijksregisterNummer)
     {
-        var nummer = Persoon.CheckRijksregisterNummer(rijksregisterNummer);
+        var nummer = new Arts(rijksregisterNummer, "ABDUL-LATIF", "KHALID", "1-79010-52-100", "{ANES}", ["{ORTH}"]);
 
-        Assert.Equal(rijksregisterNummer, nummer);
+        Assert.Equal(rijksregisterNummer, nummer.RijksregisterNummer);
     }
 
     [Theory]
@@ -38,7 +39,7 @@ public class ArtsTest
     [InlineData("99.01.01-123.456")]
     public void TEST_RIJKSREGISTERNUMMER_ALS_TEKORT_OF_TELANG(string rijksregisterNummer)
     {
-        Assert.Throws<ArgumentOutOfRangeException>(() => Persoon.CheckRijksregisterNummer(rijksregisterNummer));
+        Assert.Throws<PersoonException>(() => new Arts(rijksregisterNummer, "ABDUL-LATIF", "KHALID", "1-79010-52-100", "{ANES}", ["{ORTH}"]));
     }
 
     [Theory]
@@ -49,6 +50,67 @@ public class ArtsTest
     [InlineData("99.13.01-102.35")]
     public void TEST_RIJKSREGISTERNUMMER_ALS_FOUT_NUMMER(string rijksregisterNummer)
     {
-        Assert.Throws<ArgumentException>(() => Persoon.CheckRijksregisterNummer(rijksregisterNummer));
+        Assert.Throws<PersoonException>(() => new Arts(rijksregisterNummer, "ABDUL-LATIF", "KHALID", "1-79010-52-100", "{ANES}", ["{ORTH}"]));
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData("   ")]
+    [InlineData("\t")]
+    [InlineData("\n")]
+    [InlineData(null)]
+    public void TEST_NAAM_ALS_FOUT(string? naam)
+    {
+        Assert.Throws<PersoonException>(() => new Arts("61.08.05-432.76", naam, "KHALID", "1-79010-52-100", "{ANES}", ["{ORTH}"]));
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData("   ")]
+    [InlineData("\t")]
+    [InlineData("\n")]
+    [InlineData(null)]
+    public void TEST_VOORNAAM_ALS_FOUT(string? voornaam)
+    {
+        Assert.Throws<PersoonException>(() => new Arts("61.08.05-432.76", "ABDUL-LATIF", voornaam, "1-79010-52-100", "{ANES}", ["{ORTH}"]));
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData("   ")]
+    [InlineData("\t")]
+    [InlineData("\n")]
+    [InlineData(null)]
+    public void TEST_RIZIV_ALS_FOUT(string? riziv)
+    {
+        Assert.Throws<PersoonException>(() => new Arts("61.08.05-432.76", "ABDUL-LATIF", "KHALID", riziv, "{ANES}", ["{ORTH}"]));
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData("   ")]
+    [InlineData("\t")]
+    [InlineData("\n")]
+    [InlineData(null)]
+    [InlineData("GastG")]
+    [InlineData("abc")]
+    [InlineData("1237")]
+    public void TEST_SPECIALISATIE_ALS_FOUT(string? specialisatie)
+    {
+        Assert.Throws<PersoonException>(() => new Arts("61.08.05-432.76", "ABDUL-LATIF", "KHALID", "1-79010-52-100", specialisatie, ["{ORTH}"]));
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData("   ")]
+    [InlineData("\t")]
+    [InlineData("\n")]
+    [InlineData("GastG")]
+    [InlineData("abc")]
+    [InlineData("1237")]
+    [InlineData("GastG,ONCO")]
+    public void TEST_AFDELING_ALS_FOUT(string line)
+    {
+        Assert.Throws<PersoonException>(() => new Arts("61.08.05-432.76", "ABDUL-LATIF", "KHALID", "1-79010-52-100", "{ANES}", line.Split(",").ToHashSet()));
     }
 }

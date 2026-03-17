@@ -9,6 +9,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ZorgcentrumSln.Domein\ZorgcentrumSln.Domein.csproj" />
+    <ProjectReference Include="..\ZorgcentrumSln.Persistentie.Bestand\ZorgcentrumSln.Persistentie.Bestand.csproj" />
+    <ProjectReference Include="..\ZorgcentrumSln.Persistentie.DataBase\ZorgcentrumSln.Persistentie.DataBase.csproj" />
     <ProjectReference Include="..\ZorgcentrumSln.Persistentie\ZorgcentrumSln.Persistentie.Bestand.csproj" />
     <ProjectReference Include="..\ZorgcentrumSln.Presentatie\ZorgcentrumSln.Presentatie.csproj" />
   </ItemGroup>
