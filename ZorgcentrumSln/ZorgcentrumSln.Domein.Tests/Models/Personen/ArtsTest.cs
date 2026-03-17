@@ -1,7 +1,7 @@
 ﻿using ZorgcentrumSln.Domein.Exceptions;
 using ZorgcentrumSln.Domein.Models.Persoon;
 
-namespace ZorgcentrumSln.Domein.Tests.Models;
+namespace ZorgcentrumSln.Domein.Tests.Models.Personen;
 
 public class ArtsTest
 {
