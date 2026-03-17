@@ -6,7 +6,7 @@ public record ConsultatieAfspraakDto(int Id, DateTime DatumTijdStart, int duurMi
     : AfspraakDto(Id, DatumTijdStart, duurMin, RijksregisterNrPatient, RijksregisterNrArts, afdelingCode);
 
 public record ControleAfspraakDto(int Id, DateTime DatumTijdStart, int duurMin, string RijksregisterNrPatient, string RijksregisterNrArts, 
-    string afdelingCode, string Referentie) 
+    string afdelingCode, int Referentie) 
     : AfspraakDto(Id, DatumTijdStart, duurMin, RijksregisterNrPatient, RijksregisterNrArts, afdelingCode);
 
 public record OperatieAfspraakDto

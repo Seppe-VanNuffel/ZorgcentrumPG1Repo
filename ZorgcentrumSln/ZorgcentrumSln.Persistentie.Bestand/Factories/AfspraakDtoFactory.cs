@@ -33,9 +33,18 @@ internal class AfspraakDtoFactory
         if (data.Length != 8)
             throw new ArgumentOutOfRangeException(nameof(data), "Ingelezen lijn heeft niet genoeg data");
 
-        var afspraak = MapToAfspraakTuple(data);
+        try
+        {
+            int referentie = int.Parse(data[7].Split("=")[1]);
 
-        return new ControleAfspraakDto(afspraak.Id, afspraak.DatumTijdStart, afspraak.duurMin, afspraak.RijksregisterNrPatient, afspraak.RijksregisterNrArts, afspraak.afdelingCode, data[7]);
+            var afspraak = MapToAfspraakTuple(data);
+
+            return new ControleAfspraakDto(afspraak.Id, afspraak.DatumTijdStart, afspraak.duurMin, afspraak.RijksregisterNrPatient, afspraak.RijksregisterNrArts, afspraak.afdelingCode, referentie);
+        }
+        catch (Exception)
+        {
+            throw;
+        }
     }
 
     private static AfspraakDto MapToOperatieDto(string[] data)

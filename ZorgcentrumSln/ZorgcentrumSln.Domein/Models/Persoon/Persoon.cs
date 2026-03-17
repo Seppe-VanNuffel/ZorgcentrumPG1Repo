@@ -1,9 +1,10 @@
 ﻿using System.Data;
 using ZorgcentrumSln.Domein.Exceptions;
+using ZorgcentrumSln.Domein.Models.ZorgCentrumMotherClass;
 
 namespace ZorgcentrumSln.Domein.Models.Persoon;
 
-internal abstract class Persoon
+internal abstract class Persoon : ZorgCentrumObj
 {
     public Persoon(string rijksregisterNummer, string naam, string voornaam)
     {
@@ -11,19 +12,6 @@ internal abstract class Persoon
         Naam = naam;
         Voornaam = voornaam;
     }
-
-    protected static readonly List<string> AfdelingCodes = [
-        "PNEC",
-        "CARD",
-        "GAST",
-        "NEUR",
-        "ORTH",
-        "GERC",
-        "ONCO",
-        "PAAN",
-        "RADI",
-        "URGE"
-        ];
 
     public string RijksregisterNummer { get => field; 
         init {
