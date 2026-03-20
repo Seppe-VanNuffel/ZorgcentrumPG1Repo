@@ -8,14 +8,14 @@ internal class Program
 {
     static void Main(string[] args)
     {
-        const string padNaarArtsBestand = @".\Data\Artsen.csv";
-        const string padNaarPatientenBestand = @".\Data\Patienten.csv";
-        const string padNaarAfsprakenBestand = @".\Data\Afspraken.csv";
-
-
-        DomeinController dm = new( new PersoonRepositoryBestand(padNaarArtsBestand, padNaarPatientenBestand), new AfspraakRepositoryBestand(padNaarAfsprakenBestand));
-
-        ReaderApp app = new(dm);
-        app.Run();
+        //const string padNaarArtsBestand = @".\Data\Artsen.csv";
+        //const string padNaarPatientenBestand = @".\Data\Patienten.csv";
+        //const string padNaarAfsprakenBestand = @".\Data\Afspraken.csv";
+        //
+        //
+        //GegevensInitDomeinController dm = new( new PersoonRepositoryBestand(padNaarArtsBestand, padNaarPatientenBestand), new AfspraakRepositoryBestand(padNaarAfsprakenBestand));
+        //
+        //ReaderApp app = new(dm);
+        //app.Run();
     }
 }

@@ -1,7 +1,7 @@
-﻿DROP TABLE IF EXISTS Afdelingen;
-DROP TABLE IF EXISTS Specialisaties;
-DROP TABLE IF EXISTS PatientenAfdelingen;
+﻿DROP TABLE IF EXISTS PatientenAfdelingen;
 DROP TABLE IF EXISTS ArtsenAfdelingen;
+DROP TABLE IF EXISTS Afdelingen;
+DROP TABLE IF EXISTS Specialisaties;
 DROP TABLE IF EXISTS Consultaties;
 DROP TABLE IF EXISTS Controles;
 DROP TABLE IF EXISTS Operaties;
@@ -33,14 +33,14 @@ CREATE TABLE Artsen(
 	RIZIV VARCHAR(50),
 	SpecialisatieCode VARCHAR(5),
 
-	FOREIGN KEY (RijksregisterNummer) REFERENCES Personen(RijksregisterNummer),
+	FOREIGN KEY (RijksregisterNummer) REFERENCES Personen(RijksregisterNummer) ON DELETE CASCADE,
 	FOREIGN KEY (SpecialisatieCode) REFERENCES Specialisaties(Code)
 );
 
 CREATE TABLE Patienten(
 	RijksregisterNummer VARCHAR(20) PRIMARY KEY,
 
-	FOREIGN KEY (RijksregisterNummer) REFERENCES Personen(RijksregisterNummer)
+	FOREIGN KEY (RijksregisterNummer) REFERENCES Personen(RijksregisterNummer) ON DELETE CASCADE
 );
 
 CREATE TABLE PatientenAfdelingen(
@@ -49,7 +49,7 @@ CREATE TABLE PatientenAfdelingen(
 
 	PRIMARY KEY(RijksregisterNummer, AfdelingCode),
 
-	FOREIGN KEY (RijksregisterNummer) REFERENCES Patienten(RijksregisterNummer),
+	FOREIGN KEY (RijksregisterNummer) REFERENCES Patienten(RijksregisterNummer) ON DELETE CASCADE,
 	FOREIGN KEY (AfdelingCode) REFERENCES Afdelingen(Code),
 );
 
@@ -59,7 +59,7 @@ CREATE TABLE ArtsenAfdelingen(
 
 	PRIMARY KEY(RijksregisterNummer, AfdelingCode),
 
-	FOREIGN KEY (RijksregisterNummer) REFERENCES Artsen(RijksregisterNummer),
+	FOREIGN KEY (RijksregisterNummer) REFERENCES Artsen(RijksregisterNummer) ON DELETE CASCADE,
 	FOREIGN KEY (AfdelingCode) REFERENCES Afdelingen(Code),
 );
 

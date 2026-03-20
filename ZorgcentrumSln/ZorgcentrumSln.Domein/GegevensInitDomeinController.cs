@@ -6,14 +6,16 @@ using ZorgcentrumSln.Domein.Models.Persoon;
 
 namespace ZorgcentrumSln.Domein;
 
-public class DomeinController(IPersoonRepositoryBestandRead pRR, IAfspraakRepositoryRead aRR)
+public class GegevensInitDomeinController(IPersoonRepositoryRead pRRb, IAfspraakRepositoryRead aRRb, IPersoonRepositoryCRUD pRCRUD, IAfspraakRepositoryCRUD aRCRUD)
 {
-    private IPersoonRepositoryBestandRead _pRR = pRR;
-    private IAfspraakRepositoryRead _aRR = aRR;
+    private IPersoonRepositoryRead _pRRb = pRRb;
+    private IAfspraakRepositoryRead _aRRb = aRRb;
+    private IPersoonRepositoryCRUD _pRCRUD = pRCRUD;
+    private IAfspraakRepositoryCRUD _aRCRUD = aRCRUD;
 
     public List<PersoonDto> GetAllPersonen()
     {
-        IEnumerable<PersoonDto> persoonInfo = _pRR.GetAll();
+        IEnumerable<PersoonDto> persoonInfo = _pRRb.GetAll();
         List<Persoon> personen = new();
 
         foreach (var item in persoonInfo)
@@ -60,7 +62,7 @@ public class DomeinController(IPersoonRepositoryBestandRead pRR, IAfspraakReposi
 
     public List<AfspraakDto> GetAllAfspraken()
     {
-        IEnumerable<AfspraakDto> AfspraakInfo = _aRR.GetAll();
+        IEnumerable<AfspraakDto> AfspraakInfo = _aRRb.GetAll();
         List<Afspraak> Afspraken = new();
 
         foreach (var item in AfspraakInfo)
@@ -94,5 +96,21 @@ public class DomeinController(IPersoonRepositoryBestandRead pRR, IAfspraakReposi
         }
 
         return AfspraakDtos;
+    }
+
+    public void InsertPersoon(PersoonDto persoonDto)
+    {
+        _pRCRUD.Insert( persoonDto );
+    }
+
+    public void InsertAfspraak(AfspraakDto afspraakDto)
+    {
+        _aRCRUD.Insert(afspraakDto);
+    }
+
+    public void ClearAllFromDb()
+    {
+        _aRCRUD.ClearAllAfspraken();
+        _pRCRUD.ClearAllPersonen();
     }
 }

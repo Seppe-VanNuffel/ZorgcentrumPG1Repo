@@ -8,9 +8,9 @@ using ZorgcentrumSln.Domein.Models;
 
 namespace ZorgcentrumSln.Presentatie;
 
-public class ReaderApp(DomeinController dm)
+public class ReaderApp(GegevensInitDomeinController dm)
 {
-    private DomeinController _dm = dm;
+    private GegevensInitDomeinController _dm = dm;
 
     public void Run()
     {
@@ -24,7 +24,7 @@ public class ReaderApp(DomeinController dm)
                     foreach (var persoon in _dm.GetAllArtsen())
                     {
                         if (persoon is ArtsPersoonDto arts)
-                            Console.WriteLine($"{arts.RijksregisterNummer}, {arts.Naam} {arts.Voornaam}, {arts.Specialisate}, {string.Join('|', arts.Afdelingen)}");
+                            Console.WriteLine($"{arts.RijksregisterNummer}, {arts.Naam} {arts.Voornaam}, {arts.Specialisatie}, {string.Join('|', arts.Afdelingen)}");
                     }
                     Console.WriteLine("\n");
                     break;

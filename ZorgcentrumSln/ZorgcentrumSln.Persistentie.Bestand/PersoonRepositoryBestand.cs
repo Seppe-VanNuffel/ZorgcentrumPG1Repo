@@ -4,7 +4,7 @@ using ZorgcentrumSln.PersistentieBestand.BestandsBeheer;
 
 namespace ZorgcentrumSln.PersistentieBestand;
 
-public class PersoonRepositoryBestand : IPersoonRepositoryBestandRead
+public class PersoonRepositoryBestand : IPersoonRepositoryRead
 {
     private List<PersoonDto> _PersonenInfo;
 
@@ -18,7 +18,12 @@ public class PersoonRepositoryBestand : IPersoonRepositoryBestandRead
         return _PersonenInfo;
     }
 
-    public PersoonDto GetById(string id)
+    public PersoonDto GetArtsById(string id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public PersoonDto GetPatientById(string id)
     {
         throw new NotImplementedException();
     }

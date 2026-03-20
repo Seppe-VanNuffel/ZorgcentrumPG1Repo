@@ -89,7 +89,7 @@ internal class Arts : Persoon
                 throw new PersoonException("Er liep iets fout met het maken van deze persoon", e);
             }
 
-            field = value;
+            field = value.Replace("}", "").Replace("{", "");
         }
     }
 

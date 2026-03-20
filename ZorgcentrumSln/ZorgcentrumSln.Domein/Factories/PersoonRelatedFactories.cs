@@ -19,7 +19,7 @@ internal class PersoonRelatedFactories
     {
         return persoonDto switch
         {
-            ArtsPersoonDto APD => new Arts(APD.RijksregisterNummer, APD.Naam, APD.Voornaam, APD.RIZIV, APD.Specialisate, APD.Afdelingen),
+            ArtsPersoonDto APD => new Arts(APD.RijksregisterNummer, APD.Naam, APD.Voornaam, APD.RIZIV, APD.Specialisatie, APD.Afdelingen),
             PatientPersoonDto PPD => new Patient(PPD.RijksregisterNummer, PPD.Naam, PPD.Voornaam, PPD.Afdelingen),
             _ => throw new NotImplementedException()
         };
