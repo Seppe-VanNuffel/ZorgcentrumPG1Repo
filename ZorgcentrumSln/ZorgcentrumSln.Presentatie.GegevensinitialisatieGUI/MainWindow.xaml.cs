@@ -12,6 +12,7 @@ using ZorgcentrumSln.Domein;
 using ZorgcentrumSln.Domein.Dtos;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
 
 namespace ZorgcentrumSln.Presentatie.GegevensinitialisatieGUI;
 /// <summary>
@@ -41,6 +42,8 @@ public partial class MainWindow : Window
         // Assign ItemsSource once
         BestandenListView.ItemsSource = _bestanden;
         BestandenSelectedListView.ItemsSource = _selectedbestanden;
+
+        MainStatusBar.Visibility = Visibility.Collapsed;
     }
 
     private void Select_Click(object sender, RoutedEventArgs e)
@@ -79,7 +82,7 @@ public partial class MainWindow : Window
         }
     }
 
-    private void Continue_Click(object sender, RoutedEventArgs e)
+    private async void Continue_Click(object sender, RoutedEventArgs e)
     {
         if (BestandenSelectedListView.Items.Count == 0)
         {
@@ -88,52 +91,108 @@ public partial class MainWindow : Window
         else
         {
             try
-            {
-                _controller.ClearAllFromDb();
-                
-                if(BestandenSelectedListView.Items.Contains( "Artsen.csv"))
+            {                
+                if(BestandenSelectedListView.Items.Contains("Artsen.csv"))
                 {
-                    foreach (PersoonDto arts in _controller.GetAllArtsen())
+                    var artsen = _controller.GetAllArtsen();
+
+                    FileNameTextBox.Text = "Artsen.csv";
+                    FileProgressBar.Value = 0;
+                    FileProgressBar.Maximum = artsen.Count;
+                    MainStatusBar.Visibility = Visibility.Visible;
+
+                    await Task.Run(() => 
                     {
-                        try
+                        _controller.ClearAllAfspraken();
+                        _controller.ClearAllPersonen();
+
+                        foreach (ArtsPersoonDto arts in artsen)
                         {
-                            _controller.InsertPersoon(arts);
+                            try
+                            {
+                                _controller.InsertPersoon(arts);
+                            }
+                            catch
+                            {
+                                Debug.WriteLine($"Fout in arts");
+                            }
+                            finally
+                            {
+                                Application.Current.Dispatcher.Invoke(() => FileProgressBar.Value++);
+                            }
                         }
-                        catch
-                        {
-                            Debug.WriteLine($"Fout in arts");
-                        }
-                    }
+                    });
+
+                    MainStatusBar.Visibility = Visibility.Collapsed;
                 }
 
                 if (BestandenSelectedListView.Items.Contains("Patienten.csv"))
                 {
-                    foreach (PersoonDto Patient in _controller.GetAllPatienten())
+                    var patienten = _controller.GetAllPatienten();
+
+                    FileNameTextBox.Text = "Patienten.csv";
+
+                    FileProgressBar.Value = 0;
+                    FileProgressBar.Maximum = patienten.Count;
+                    MainStatusBar.Visibility = Visibility.Visible;
+
+                    await Task.Run(() => 
                     {
-                        try
+                        _controller.ClearAllAfspraken();
+                        _controller.ClearAllPersonen();
+
+                        foreach (PatientPersoonDto Patient in patienten)
                         {
-                            _controller.InsertPersoon(Patient);
+                            try
+                            {
+                                _controller.InsertPersoon(Patient);
+                            }
+                            catch
+                            {
+                                Debug.WriteLine($"Fout in Persoon");
+                            }
+                            finally
+                            {
+                                Application.Current.Dispatcher.Invoke(() => FileProgressBar.Value++);
+                            }
                         }
-                        catch
-                        {
-                            Debug.WriteLine($"Fout in Persoon");
-                        }
-                    } 
+                    });
+
+                    MainStatusBar.Visibility = Visibility.Collapsed;
                 }
 
                 if (BestandenSelectedListView.Items.Contains("Afspraken.csv"))
                 {
-                    foreach (AfspraakDto afspraak in _controller.GetAllAfspraken())
+                    var afspraken = _controller.GetAllAfspraken();
+
+                    FileNameTextBox.Text = "Afspraken.csv";
+
+                    FileProgressBar.Value = 0;
+                    FileProgressBar.Maximum = afspraken.Count;
+                    MainStatusBar.Visibility = Visibility.Visible;
+
+                    await Task.Run(() => 
                     {
-                        try
+                        _controller.ClearAllAfspraken();
+
+                        foreach (AfspraakDto afspraak in afspraken)
                         {
-                            _controller.InsertAfspraak(afspraak);
+                            try
+                            {
+                                _controller.InsertAfspraak(afspraak);
+                            }
+                            catch
+                            {
+                                Debug.WriteLine($"Fout in Afspraak");
+                            }
+                            finally
+                            {
+                                Application.Current.Dispatcher.Invoke(() => FileProgressBar.Value++);
+                            }
                         }
-                        catch
-                        {
-                            Debug.WriteLine($"Fout in Afspraak");
-                        }
-                    }
+                    });
+
+                    MainStatusBar.Visibility = Visibility.Collapsed;
                 }
 
 
@@ -141,7 +200,7 @@ public partial class MainWindow : Window
             }
             catch (Exception)
             {
-
+                throw;
             }
         }
     }

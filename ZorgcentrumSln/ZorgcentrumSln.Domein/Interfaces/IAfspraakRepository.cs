@@ -12,6 +12,7 @@ public interface IAfspraakRepositoryRead
 public interface IAfspraakRepositoryCRUD : IAfspraakRepositoryRead
 {
     void Insert(AfspraakDto product);
+    void InsertOld(AfspraakDto product);
     void Update(AfspraakDto product);
     void Delete(string id);
     public void ClearAllAfspraken();

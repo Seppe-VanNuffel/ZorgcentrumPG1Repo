@@ -56,47 +56,50 @@ public class AfspraakRepositoryDatabase : IAfspraakRepositoryCRUD
         using var trans = conn.BeginTransaction();
         try
         {
-            string type = dto switch
+            if (PersonenExist(dto.RijksregisterNrArts, dto.RijksregisterNrPatient))
             {
-                OperatieAfspraakDto => "Operatie",
-                ControleAfspraakDto => "Controle",
-                _ => "Consultatie"
-            };
+                string type = dto switch
+                {
+                    OperatieAfspraakDto => "Operatie",
+                    ControleAfspraakDto => "Controle",
+                    _ => "Consultatie"
+                };
 
-            string baseSql = @"INSERT INTO Afspraken (Type, AfdelingCode, DatumTijdStart, DuurMin, RijksregisterNrArts, RijksregisterNrPatient) 
+                string baseSql = @"INSERT INTO Afspraken (Type, AfdelingCode, DatumTijdStart, DuurMin, RijksregisterNrArts, RijksregisterNrPatient) 
                                OUTPUT INSERTED.Id
                                VALUES (@Type, @Afdeling, @Start, @Duur, @Arts, @Patient)";
 
-            using var cmd = new SqlCommand(baseSql, conn, trans);
-            cmd.Parameters.AddWithValue("@Type", type);
-            cmd.Parameters.AddWithValue("@Afdeling", dto.afdelingCode);
-            cmd.Parameters.AddWithValue("@Start", dto.DatumTijdStart);
-            cmd.Parameters.AddWithValue("@Duur", dto.duurMin);
-            cmd.Parameters.AddWithValue("@Arts", dto.RijksregisterNrArts);
-            cmd.Parameters.AddWithValue("@Patient", dto.RijksregisterNrPatient);
+                using var cmd = new SqlCommand(baseSql, conn, trans);
+                cmd.Parameters.AddWithValue("@Type", type);
+                cmd.Parameters.AddWithValue("@Afdeling", dto.afdelingCode);
+                cmd.Parameters.AddWithValue("@Start", dto.DatumTijdStart);
+                cmd.Parameters.AddWithValue("@Duur", dto.duurMin);
+                cmd.Parameters.AddWithValue("@Arts", dto.RijksregisterNrArts);
+                cmd.Parameters.AddWithValue("@Patient", dto.RijksregisterNrPatient);
 
-            int newId = (int)cmd.ExecuteScalar();
+                int newId = (int)cmd.ExecuteScalar();
 
-            if (dto is OperatieAfspraakDto op)
-            {
-                string opSql = "INSERT INTO Operaties (Id, AantalMinutenOpVoorhand, Beschrijving) VALUES (@Id, @Min, @Desc)";
-                using var cmdOp = new SqlCommand(opSql, conn, trans);
-                cmdOp.Parameters.AddWithValue("@Id", newId);
-                cmdOp.Parameters.AddWithValue("@Min", op.AantalMinutenOpVoorhand);
-                cmdOp.Parameters.AddWithValue("@Desc", op.Beschrijving);
-                cmdOp.ExecuteNonQuery();
+                if (dto is OperatieAfspraakDto op)
+                {
+                    string opSql = "INSERT INTO Operaties (Id, AantalMinutenOpVoorhand, Beschrijving) VALUES (@Id, @Min, @Desc)";
+                    using var cmdOp = new SqlCommand(opSql, conn, trans);
+                    cmdOp.Parameters.AddWithValue("@Id", newId);
+                    cmdOp.Parameters.AddWithValue("@Min", op.AantalMinutenOpVoorhand);
+                    cmdOp.Parameters.AddWithValue("@Desc", op.Beschrijving);
+                    cmdOp.ExecuteNonQuery();
+                }
+                else if (dto is ControleAfspraakDto co)
+                {
+                    string coSql = "INSERT INTO Controles (Id, Referentie) VALUES (@Id, @Ref)";
+                    using var cmdCo = new SqlCommand(coSql, conn, trans);
+                    cmdCo.Parameters.AddWithValue("@Id", newId);
+                    cmdCo.Parameters.AddWithValue("@Ref", co.Referentie);
+                    cmdCo.ExecuteNonQuery();
+                }
+                // Consultatie has no extra table fields in this split logic
+
+                trans.Commit(); 
             }
-            else if (dto is ControleAfspraakDto co)
-            {
-                string coSql = "INSERT INTO Controles (Id, Referentie) VALUES (@Id, @Ref)";
-                using var cmdCo = new SqlCommand(coSql, conn, trans);
-                cmdCo.Parameters.AddWithValue("@Id", newId);
-                cmdCo.Parameters.AddWithValue("@Ref", co.Referentie);
-                cmdCo.ExecuteNonQuery();
-            }
-            // Consultatie has no extra table fields in this split logic
-
-            trans.Commit();
         }
         catch { trans.Rollback(); throw; }
     }
@@ -228,5 +231,95 @@ public class AfspraakRepositoryDatabase : IAfspraakRepositoryCRUD
             trans.Rollback();
             throw;
         }
+    }
+
+    private bool PersonenExist(string rijksregisterNrArts, string rijksregisterNrPatient)
+    {
+        using var conn = new SqlConnection(_connectionString);
+        string sql = @"SELECT COUNT(*) FROM Personen 
+                       WHERE RijksregisterNummer IN (@Arts, @Patient)";
+        conn.Open();
+        using var cmd = new SqlCommand(sql, conn);
+        cmd.Parameters.AddWithValue("@Arts", rijksregisterNrArts);
+        cmd.Parameters.AddWithValue("@Patient", rijksregisterNrPatient);
+        int count = (int)cmd.ExecuteScalar();
+        return count == 2; // Both the arts and patient should exist
+    }
+
+    public void InsertOld(AfspraakDto dto)
+    {
+        using var conn = new SqlConnection(_connectionString);
+        conn.Open();
+        using var trans = conn.BeginTransaction();
+        try
+        {
+            if (PersonenExist(dto.RijksregisterNrArts, dto.RijksregisterNrPatient))
+            {
+                using (var cmdEnable = new SqlCommand("SET IDENTITY_INSERT Afspraken ON", conn, trans))
+                {
+                    cmdEnable.ExecuteNonQuery();
+                }
+
+                string type = dto switch
+                {
+                    OperatieAfspraakDto => "Operatie",
+                    ControleAfspraakDto => "Controle",
+                    _ => "Consultatie"
+                };
+
+                string baseSql = @"INSERT INTO Afspraken (Id, Type, AfdelingCode, DatumTijdStart, DuurMin, RijksregisterNrArts, RijksregisterNrPatient) 
+                               OUTPUT INSERTED.Id
+                               VALUES (@Id, @Type, @Afdeling, @Start, @Duur, @Arts, @Patient)";
+
+                using var cmd = new SqlCommand(baseSql, conn, trans);
+                cmd.Parameters.AddWithValue("@Id", dto.Id);
+                cmd.Parameters.AddWithValue("@Type", type);
+                cmd.Parameters.AddWithValue("@Afdeling", dto.afdelingCode);
+                cmd.Parameters.AddWithValue("@Start", dto.DatumTijdStart);
+                cmd.Parameters.AddWithValue("@Duur", dto.duurMin);
+                cmd.Parameters.AddWithValue("@Arts", dto.RijksregisterNrArts);
+                cmd.Parameters.AddWithValue("@Patient", dto.RijksregisterNrPatient);
+
+                cmd.ExecuteScalar();
+
+                using (var cmdDisable = new SqlCommand("SET IDENTITY_INSERT Afspraken OFF", conn, trans))
+                {
+                    cmdDisable.ExecuteNonQuery();
+                }
+
+                if (dto is OperatieAfspraakDto op)
+                {
+                    string opSql = "INSERT INTO Operaties (Id, AantalMinutenOpVoorhand, Beschrijving) VALUES (@Id, @Min, @Desc)";
+                    using var cmdOp = new SqlCommand(opSql, conn, trans);
+                    cmdOp.Parameters.AddWithValue("@Id", dto.Id);
+                    cmdOp.Parameters.AddWithValue("@Min", op.AantalMinutenOpVoorhand);
+                    cmdOp.Parameters.AddWithValue("@Desc", op.Beschrijving);
+                    cmdOp.ExecuteNonQuery();
+
+                    trans.Commit();
+                }
+                else if (dto is ControleAfspraakDto co)
+                {
+                    if (GetById(co.Referentie.ToString()) != null)
+                    {
+                        string coSql = "INSERT INTO Controles (Id, Referentie) VALUES (@Id, @Ref)";
+                        using var cmdCo = new SqlCommand(coSql, conn, trans);
+                        cmdCo.Parameters.AddWithValue("@Id", dto.Id);
+                        cmdCo.Parameters.AddWithValue("@Ref", co.Referentie);
+                        cmdCo.ExecuteNonQuery();
+
+                        trans.Commit();
+                    }
+                    else
+                        trans.Rollback(); // Referential integrity violation: the referenced Controle does not exist
+                }
+                else if(dto is ConsultatieAfspraakDto)
+                {
+                    // No additional table for Consultatie, just commit the base insert
+                    trans.Commit();
+                }
+            }
+        }
+        catch { trans.Rollback(); throw; }
     }
 }

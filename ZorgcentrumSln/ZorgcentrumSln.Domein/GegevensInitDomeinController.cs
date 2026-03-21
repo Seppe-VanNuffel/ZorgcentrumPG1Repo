@@ -105,12 +105,22 @@ public class GegevensInitDomeinController(IPersoonRepositoryRead pRRb, IAfspraak
 
     public void InsertAfspraak(AfspraakDto afspraakDto)
     {
-        _aRCRUD.Insert(afspraakDto);
+        _aRCRUD.InsertOld(afspraakDto);
     }
 
     public void ClearAllFromDb()
     {
         _aRCRUD.ClearAllAfspraken();
+        _pRCRUD.ClearAllPersonen();
+    }
+
+    public void ClearAllAfspraken()
+    {
+        _aRCRUD.ClearAllAfspraken();
+    }
+
+    public void ClearAllPersonen()
+    {
         _pRCRUD.ClearAllPersonen();
     }
 }

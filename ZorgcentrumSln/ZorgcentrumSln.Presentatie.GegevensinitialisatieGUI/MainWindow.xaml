@@ -6,34 +6,58 @@
         xmlns:local="clr-namespace:ZorgcentrumSln.Presentatie.GegevensinitialisatieGUI"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid Margin="5">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="100"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <DockPanel>
 
-        <Label Content="Bestanden" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <Label Content="Te verwerken" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <StatusBar DockPanel.Dock="Bottom"  Height="20" Margin="5" x:Name="MainStatusBar">
+            <StatusBar.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                </ItemsPanelTemplate>
+            </StatusBar.ItemsPanel>
+            <StatusBarItem>
+                <TextBlock x:Name="FileNameTextBox" Text="Test.csv"/>
+            </StatusBarItem>
+            <Separator Grid.Column="1" Margin="5, 0"/>
+            <StatusBarItem Grid.Column="2" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                <ProgressBar x:Name="FileProgressBar" Value="100" Maximum="100"/>
+            </StatusBarItem>
+        </StatusBar>
 
-        <ListView x:Name="BestandenListView" SelectionMode="Multiple" Grid.Row="1"/>
+        <Grid Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Center">
-            <StackPanel.Resources>
-                <Style TargetType="Button">
-                    <Setter Property="Margin" Value="5"/>
-                    <Setter Property="Padding" Value="3"/>
-                </Style>
-            </StackPanel.Resources>
-            <Button x:Name="Select" Content="Select" Click="Select_Click"/>
-            <Button x:Name="Remove" Content="Remove" Click="Remove_Click"/>
-            <Button x:Name="Continue" Content="Continue" Click="Continue_Click"/>
-        </StackPanel>
-        
-        <ListView x:Name="BestandenSelectedListView" SelectionMode="Multiple" Grid.Row="1" Grid.Column="2"/>
-    </Grid>
+            <Label Content="Bestanden" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Label Content="Te verwerken" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+            <ListView x:Name="BestandenListView" SelectionMode="Multiple" Grid.Row="1"/>
+
+            <StackPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Center">
+                <StackPanel.Resources>
+                    <Style TargetType="Button">
+                        <Setter Property="Margin" Value="5"/>
+                        <Setter Property="Padding" Value="3"/>
+                    </Style>
+                </StackPanel.Resources>
+                <Button x:Name="Select" Content="Select" Click="Select_Click"/>
+                <Button x:Name="Remove" Content="Remove" Click="Remove_Click"/>
+                <Button x:Name="Continue" Content="Continue" Click="Continue_Click"/>
+            </StackPanel>
+
+            <ListView x:Name="BestandenSelectedListView" SelectionMode="Multiple" Grid.Row="1" Grid.Column="2"/>
+        </Grid>
+    </DockPanel>
 </Window>
