@@ -10,8 +10,8 @@ public class GegevensInitDomeinController(IPersoonRepositoryRead pRRb, IAfspraak
 {
     private IPersoonRepositoryRead _pRRb = pRRb;
     private IAfspraakRepositoryRead _aRRb = aRRb;
-    private IPersoonRepositoryCRUD _pRCRUD = pRCRUD;
-    private IAfspraakRepositoryCRUD _aRCRUD = aRCRUD;
+    private IPersoonRepositoryCRUD _pRCRUDDB = pRCRUD;
+    private IAfspraakRepositoryCRUD _aRCRUDDB = aRCRUD;
 
     public List<PersoonDto> GetAllPersonen()
     {
@@ -100,27 +100,36 @@ public class GegevensInitDomeinController(IPersoonRepositoryRead pRRb, IAfspraak
 
     public void InsertPersoon(PersoonDto persoonDto)
     {
-        _pRCRUD.Insert( persoonDto );
+        _pRCRUDDB.Insert(persoonDto);
     }
 
     public void InsertAfspraak(AfspraakDto afspraakDto)
     {
-        _aRCRUD.InsertOld(afspraakDto);
+        _aRCRUDDB.InsertOld(afspraakDto);
     }
 
     public void ClearAllFromDb()
     {
-        _aRCRUD.ClearAllAfspraken();
-        _pRCRUD.ClearAllPersonen();
+        _aRCRUDDB.ClearAllAfspraken();
+        _pRCRUDDB.ClearAllPersonen();
     }
 
     public void ClearAllAfspraken()
     {
-        _aRCRUD.ClearAllAfspraken();
+        _aRCRUDDB.ClearAllAfspraken();
     }
 
     public void ClearAllPersonen()
     {
-        _pRCRUD.ClearAllPersonen();
+        _pRCRUDDB.ClearAllPersonen();
+    }
+
+    public int GetAfsprakenCountFromDb()
+    {
+        return _aRCRUDDB.GetAmount();
+    }
+    public int GetPersonenCountFromDb()
+    {
+        return _pRCRUDDB.GetAmount();
     }
 }

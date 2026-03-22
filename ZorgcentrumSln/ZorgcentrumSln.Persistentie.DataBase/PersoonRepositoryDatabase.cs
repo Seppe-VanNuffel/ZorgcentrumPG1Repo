@@ -394,4 +394,13 @@ public class PersoonRepositoryDatabase : IPersoonRepositoryCRUD
             throw;
         }
     }
+
+    public int GetAmount()
+    {
+        using var conn = new SqlConnection(_connectionString);
+        string sql = "SELECT COUNT(*) FROM Personen";
+        conn.Open();
+        using var cmd = new SqlCommand(sql, conn);
+        return (int)cmd.ExecuteScalar();
+    }
 }

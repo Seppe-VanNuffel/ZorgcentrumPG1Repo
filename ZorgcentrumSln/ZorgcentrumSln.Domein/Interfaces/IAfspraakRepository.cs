@@ -16,4 +16,5 @@ public interface IAfspraakRepositoryCRUD : IAfspraakRepositoryRead
     void Update(AfspraakDto product);
     void Delete(string id);
     public void ClearAllAfspraken();
+    int GetAmount();
 }

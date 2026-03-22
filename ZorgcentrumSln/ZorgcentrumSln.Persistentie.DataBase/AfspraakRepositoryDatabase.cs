@@ -96,9 +96,15 @@ public class AfspraakRepositoryDatabase : IAfspraakRepositoryCRUD
                     cmdCo.Parameters.AddWithValue("@Ref", co.Referentie);
                     cmdCo.ExecuteNonQuery();
                 }
-                // Consultatie has no extra table fields in this split logic
+                else if (dto is ConsultatieAfspraakDto cons)
+                {
+                    string consSql = "INSERT INTO Consultaties (Id) VALUES (@Id)";
+                    using var cmdCons = new SqlCommand(consSql, conn, trans);
+                    cmdCons.Parameters.AddWithValue("@Id", newId);
+                    cmdCons.ExecuteNonQuery();
+                }
 
-                trans.Commit(); 
+                trans.Commit();
             }
         }
         catch { trans.Rollback(); throw; }
@@ -315,11 +321,24 @@ public class AfspraakRepositoryDatabase : IAfspraakRepositoryCRUD
                 }
                 else if(dto is ConsultatieAfspraakDto)
                 {
-                    // No additional table for Consultatie, just commit the base insert
+                    string consSql = "INSERT INTO Consultaties (Id) VALUES (@Id)";
+                    using var cmdCons = new SqlCommand(consSql, conn, trans);
+                    cmdCons.Parameters.AddWithValue("@Id", dto.Id);
+                    cmdCons.ExecuteNonQuery();
+
                     trans.Commit();
                 }
             }
         }
         catch { trans.Rollback(); throw; }
+    }
+
+    public int GetAmount()
+    {
+        using var conn = new SqlConnection(_connectionString);
+        string sql = "SELECT COUNT(*) FROM Afspraken";
+        conn.Open();
+        using var cmd = new SqlCommand(sql, conn);
+        return (int)cmd.ExecuteScalar();
     }
 }

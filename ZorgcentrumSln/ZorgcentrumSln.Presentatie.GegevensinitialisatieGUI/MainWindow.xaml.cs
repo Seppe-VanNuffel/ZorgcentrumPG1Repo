@@ -84,6 +84,8 @@ public partial class MainWindow : Window
 
     private async void Continue_Click(object sender, RoutedEventArgs e)
     {
+        bool clearedAll = false;
+
         if (BestandenSelectedListView.Items.Count == 0)
         {
             MessageBox.Show("Selecteer minstens een bestand", "Opmerking", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -103,8 +105,12 @@ public partial class MainWindow : Window
 
                     await Task.Run(() => 
                     {
-                        _controller.ClearAllAfspraken();
-                        _controller.ClearAllPersonen();
+                        if(!clearedAll)
+                        {
+                            _controller.ClearAllAfspraken();
+                            _controller.ClearAllPersonen();
+                            clearedAll = true;
+                        }
 
                         foreach (ArtsPersoonDto arts in artsen)
                         {
@@ -138,8 +144,12 @@ public partial class MainWindow : Window
 
                     await Task.Run(() => 
                     {
-                        _controller.ClearAllAfspraken();
-                        _controller.ClearAllPersonen();
+                        if (!clearedAll)
+                        {
+                            _controller.ClearAllAfspraken();
+                            _controller.ClearAllPersonen();
+                            clearedAll = true;
+                        }
 
                         foreach (PatientPersoonDto Patient in patienten)
                         {
@@ -173,23 +183,33 @@ public partial class MainWindow : Window
 
                     await Task.Run(() => 
                     {
-                        _controller.ClearAllAfspraken();
-
-                        foreach (AfspraakDto afspraak in afspraken)
+                        if (!clearedAll)
                         {
-                            try
+                            _controller.ClearAllAfspraken();
+                            clearedAll = true;
+                        }
+
+                        // Check if artsen and patienten are already inserted, if not throw an error message and skip inserting afspraken
+                        if (_controller.GetPersonenCountFromDb() > 0)
+                        {
+                            foreach (AfspraakDto afspraak in afspraken)
                             {
-                                _controller.InsertAfspraak(afspraak);
-                            }
-                            catch
-                            {
-                                Debug.WriteLine($"Fout in Afspraak");
-                            }
-                            finally
-                            {
-                                Application.Current.Dispatcher.Invoke(() => FileProgressBar.Value++);
+                                try
+                                {
+                                    _controller.InsertAfspraak(afspraak);
+                                }
+                                catch
+                                {
+                                    Debug.WriteLine($"Fout in Afspraak");
+                                }
+                                finally
+                                {
+                                    Application.Current.Dispatcher.Invoke(() => FileProgressBar.Value++);
+                                }
                             }
                         }
+                        else
+                            throw new Exception("Artsen en Patienten moeten eerst worden ingevoerd voordat afspraken kunnen worden toegevoegd.");
                     });
 
                     MainStatusBar.Visibility = Visibility.Collapsed;
@@ -198,9 +218,9 @@ public partial class MainWindow : Window
 
                 MessageBox.Show("All files parsed");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

@@ -19,4 +19,5 @@ public interface IPersoonRepositoryCRUD : IPersoonRepositoryRead
     void Delete(string id);
 
     public void ClearAllPersonen();
+    int GetAmount();
 }
