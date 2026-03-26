@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ZorgcentrumSln.Presentatie.GebruikersApplicatieGUI"
         mc:Ignorable="d"
-        Title="AfspraakDetails" Height="477" Width="506">
+        Title="AfspraakDetails" Height="477" Width="582">
     <DockPanel>
         <StackPanel Name="ButtonStackPanel" DockPanel.Dock="Right" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5">
             <Button Name="OpslaanButton" Content="Opslaan" Width="75" Margin="0,0,0,5" Click="OpslaanButton_Click"/>
@@ -47,7 +47,7 @@
 
                 <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
                     <Label Content="Afdeling:"/>
-                    <TextBox Name="AfdelingTextBox"/>
+                    <ComboBox Name="AfdelingComboBox"/>
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal" Margin="0,0,0,5">

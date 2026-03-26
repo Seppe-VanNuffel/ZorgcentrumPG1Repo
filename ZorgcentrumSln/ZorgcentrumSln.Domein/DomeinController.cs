@@ -1,4 +1,5 @@
 ﻿using ZorgcentrumSln.Domein.Dtos;
+using ZorgcentrumSln.Domein.Factories;
 using ZorgcentrumSln.Domein.Interfaces;
 
 namespace ZorgcentrumSln.Domein;
@@ -49,13 +50,31 @@ public class DomeinController
         _afspraakRepository.Delete(id.ToString());
     }
 
-    public void InsertAfspraak(AfspraakDto afspraak)
+    public void InsertAfspraak(AfspraakDto afspraakDto)
     {
-        _afspraakRepository.Insert(afspraak);
+        var afspraak = AfspraakRelatedFactories.CreateAfspraakFromAfspraakDto(afspraakDto);
+
+        _afspraakRepository.Insert(AfspraakRelatedFactories.CreateAfspraakDtoFromAfspraak(afspraak));
     }
 
-    public void UpdateAfspraak(AfspraakDto afspraak)
+    public void UpdateAfspraak(AfspraakDto afspraakDto)
     {
-        _afspraakRepository.Update(afspraak);
+        var afspraak = AfspraakRelatedFactories.CreateAfspraakFromAfspraakDto(afspraakDto);
+
+        _afspraakRepository.Update(AfspraakRelatedFactories.CreateAfspraakDtoFromAfspraak(afspraak));
+    }
+
+    public void InsertPersoon(PersoonDto persoonDto)
+    {
+        var persoon = PersoonRelatedFactories.CreatePersoonFromPersoonDto(persoonDto);
+
+        _persoonRepository.Insert(PersoonRelatedFactories.CreatePersoonDtoFromPersoon(persoon));
+    }
+
+    public void UpdatePersoon(PersoonDto persoonDto)
+    {
+        var persoon = PersoonRelatedFactories.CreatePersoonFromPersoonDto(persoonDto);
+
+        _persoonRepository.Update(PersoonRelatedFactories.CreatePersoonDtoFromPersoon(persoon));
     }
 }

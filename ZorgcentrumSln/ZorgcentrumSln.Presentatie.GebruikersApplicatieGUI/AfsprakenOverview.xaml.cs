@@ -32,7 +32,8 @@ public partial class AfsprakenOverview : Window
     private void RefreshFilterItems()
     {
         FilterArtsenComboBox.ItemsSource = _dc.GetAllArtsen().ToList().OrderBy(x => x.Naam);
-        FilterPatientenComboBox.ItemsSource = _dc.GetAllPatienten().OrderBy(x => x.Naam);
+
+        RefreshFilterPatientenComboBox();
 
         List<Afdeling> afdelingen = new List<Afdeling>();
 
@@ -43,6 +44,11 @@ public partial class AfsprakenOverview : Window
         }
 
         FilterAfdelingenComboBox.ItemsSource = afdelingen.OrderBy(a => a.Naam);
+    }
+
+    private void RefreshFilterPatientenComboBox()
+    {
+        FilterPatientenComboBox.ItemsSource = _dc.GetAllPatienten().OrderBy(x => x.Naam);
     }
 
     private void RefreshAfsprakenListView()
@@ -140,11 +146,22 @@ public partial class AfsprakenOverview : Window
 
     private void PatientToevoegenButton_Click(object sender, RoutedEventArgs e)
     {
+        var window = new PatientenDetails(PatientenDetails.PatientenDetailsMode.Create, _dc);
+        window.ShowDialog();
 
+        RefreshFilterPatientenComboBox();
     }
 
     private void PatientBeherenButton_Click(object sender, RoutedEventArgs e)
     {
+        var window = new PatientenDetails(PatientenDetails.PatientenDetailsMode.Edit, _dc);
+        window.ShowDialog();
 
+        RefreshFilterPatientenComboBox();
+    }
+
+    private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+    {
+        App.Current.Shutdown();
     }
 }

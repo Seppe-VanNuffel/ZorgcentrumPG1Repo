@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ZorgcentrumSln.Presentatie.GebruikersApplicatieGUI"
         mc:Ignorable="d"
-        Title="AfsprakenOverview" Height="450" Width="800">
+        Title="AfsprakenOverview" Height="450" Width="800" Closing="Window_Closing">
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Bestand">
@@ -48,7 +48,10 @@
                     <ComboBox Name="FilterArtsenComboBox" IsEditable="True" IsTextSearchEnabled="True" IsTextSearchCaseSensitive="False" TextSearch.TextPath="Naam">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Naam}"/>
+                                <TextBlock>
+                                    <TextBlock Text="{Binding Naam}"/>
+                                    <TextBlock Text="{Binding Voornaam}"/>
+                                </TextBlock>
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
@@ -57,10 +60,13 @@
                 <StackPanel>
                     <Label Content="Patient"/>
                     <!--Only shows Naam and voornaam as text when selected-->
-                    <ComboBox x:Name="FilterPatientenComboBox" IsEditable="True" IsTextSearchEnabled="True" IsTextSearchCaseSensitive="False" TextSearch.TextPath="Naam">
+                    <ComboBox x:Name="FilterPatientenComboBox" IsEditable="True" IsTextSearchEnabled="True" IsTextSearchCaseSensitive="False" TextSearch.TextPath="Naam, Voornaam">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Naam}"/>
+                                <TextBlock>
+                                    <TextBlock Text="{Binding Naam}"/>
+                                    <TextBlock Text="{Binding Voornaam}"/>
+                                </TextBlock>
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>

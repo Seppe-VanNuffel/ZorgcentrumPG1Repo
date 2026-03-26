@@ -46,6 +46,8 @@ public partial class AfspraakDetails : Window
         _dc = dc;
         _mode = detailsMode;
 
+        AfdelingComboBox.ItemsSource = _dc.GetAllAfdelingCodes();
+
         switch (_mode)
         {
             case AfspraakDetailsMode.Create:
@@ -59,8 +61,10 @@ public partial class AfspraakDetails : Window
                 ButtonStackPanel.Visibility = Visibility.Collapsed;
                 // Disable all input controls
                 IDTextBox.IsEnabled = false;
-                AfdelingTextBox.IsEnabled = false;
+                AfdelingComboBox.IsEnabled = false;
                 DatumTijdDatePicker.IsEnabled = false;
+                TijdUurComboBox.IsEnabled = false;
+                TijdMinutenComboBox.IsEnabled = false;
                 DuurTextBox.IsEnabled = false;
                 ArtsTextBox.IsEnabled = false;
                 PatientTextBox.IsEnabled = false;
@@ -76,7 +80,7 @@ public partial class AfspraakDetails : Window
         if (_afspraak is not null)
         {
             IDTextBox.Text = _afspraak.Id.ToString();
-            AfdelingTextBox.Text = _afspraak.afdelingCode;
+            AfdelingComboBox.SelectedItem = _afspraak.afdelingCode;
             DatumTijdDatePicker.SelectedDate = _afspraak.DatumTijdStart;
             TijdUurComboBox.SelectedIndex = _afspraak.DatumTijdStart.Hour;
             TijdMinutenComboBox.SelectedIndex = _afspraak.DatumTijdStart.Minute / 5;
@@ -144,21 +148,28 @@ public partial class AfspraakDetails : Window
     {
         AfspraakDto afspraak;
 
-        switch (_mode)
+        try
         {
-            case AfspraakDetailsMode.Create:
-                afspraak = MapToAfspraakDto() ?? throw new InvalidOperationException("Ongeldige afspraak gegevens.");
-                _dc.InsertAfspraak(afspraak);
-                break;
-            case AfspraakDetailsMode.Edit:
-                afspraak = MapToAfspraakDto() ?? throw new InvalidOperationException("Ongeldige afspraak gegevens.");
-                _dc.UpdateAfspraak(afspraak);
-                break;
+            switch (_mode)
+            {
+                case AfspraakDetailsMode.Create:
+                    afspraak = MapToAfspraakDto() ?? throw new InvalidOperationException("Ongeldige afspraak gegevens.");
+                    _dc.InsertAfspraak(afspraak);
+                    break;
+                case AfspraakDetailsMode.Edit:
+                    afspraak = MapToAfspraakDto() ?? throw new InvalidOperationException("Ongeldige afspraak gegevens.");
+                    _dc.UpdateAfspraak(afspraak);
+                    break;
+                case AfspraakDetailsMode.View:
+                default:
+                    break;
+            }
 
-
-            case AfspraakDetailsMode.View:
-            default:
-                break;
+            this.Close();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Er liep iets mis\n{ex.Message}", "Error",MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 
@@ -170,7 +181,13 @@ public partial class AfspraakDetails : Window
             return null;
         }
 
-        if(DatumTijdDatePicker.SelectedDate is null)
+        if (AfdelingComboBox.SelectedItem is null)
+        {
+            MessageBox.Show("Selecteer een afdeling.", "Fout", MessageBoxButton.OK, MessageBoxImage.Error);
+            return null;
+        }
+
+        if (DatumTijdDatePicker.SelectedDate is null)
         {
             MessageBox.Show("Selecteer een datum.", "Fout", MessageBoxButton.OK, MessageBoxImage.Error);
             return null;
@@ -178,8 +195,13 @@ public partial class AfspraakDetails : Window
 
         AfspraakDto afspraak;
 
-        int id = int.MaxValue;
-        string afdelingCode = AfdelingTextBox.Text;
+        int id;
+
+        if (_mode == AfspraakDetailsMode.Create)
+            id = int.MaxValue;
+        else
+            id = int.Parse(IDTextBox.Text);
+        string afdelingCode = AfdelingComboBox.SelectedItem.ToString();
         DateTime dateTime = DatumTijdDatePicker.SelectedDate.Value;
         dateTime = dateTime.AddHours(TijdUurComboBox.SelectedIndex);
         dateTime = dateTime.AddMinutes(TijdMinutenComboBox.SelectedIndex * 5);
