@@ -9,6 +9,9 @@ public interface IAfspraakRepositoryRead
     IEnumerable<AfspraakDto> GetAll();
 }
 
+/// <summary>
+/// THIS CRUD INTERFACE IS ONLY USED BY THE DATABASE
+/// </summary>
 public interface IAfspraakRepositoryCRUD : IAfspraakRepositoryRead
 {
     void Insert(AfspraakDto product);
@@ -17,4 +20,6 @@ public interface IAfspraakRepositoryCRUD : IAfspraakRepositoryRead
     void Delete(string id);
     public void ClearAllAfspraken();
     int GetAmount();
+    IEnumerable<AfspraakDto> GetAllByFilter(string filter);
+    IEnumerable<string> GetAllAfdelingen();
 }

@@ -12,45 +12,66 @@
                 <MenuItem Header="Afsluiten" Click="AfsluitenMenuItem_Click"/>
             </MenuItem>
         </Menu>
-        
-        <StackPanel x:Name="AdminButtonsPanel" Margin="10" VerticalAlignment="Center" Visibility="Visible" DockPanel.Dock="Right">
-            <Label Content="Afspraken" Margin="0,3"/>
-            <Button Content="Toevoegen" Margin="0,0,0,5"/>
-            <Button Content="Bewerken" Margin="0,0,0,5"/>
-            <Button Content="Verwijderen" Margin="0,0,0,5"/>
 
-            <Label Content="Patienten" Margin="0,3"/>
-            <Button Content="Toevoegen" Margin="0,0,0,5"/>
-            <Button Content="Bewerken" Margin="0,0,0,5"/>
-            <Button Content="Verwijderen" Margin="0,0,0,5"/>
+        <StackPanel x:Name="AdminButtonsPanel" Margin="10" VerticalAlignment="Center" Visibility="Visible" DockPanel.Dock="Right" Width="100">
+            <GroupBox Header="Afspraken" Padding="2" Margin="2">
+                <StackPanel Margin="2">
+                    <Button Content="Toevoegen" Margin="0,0,0,5" Name="AfspraakToevoegenButton" Click="AfspraakToevoegenButton_Click"/>
+                    <Button Content="Bewerken" Margin="0,0,0,5" Name="AfspraakBewerkenButton" Click="AfspraakBewerkenButton_Click"/>
+                    <Button Content="Verwijderen" Margin="0,0,0,5" Name="AfspraakVerwijderenButton" Click="AfspraakVerwijderenButton_Click"/>
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Header="Patienten" Margin="2" Padding="2">
+                <StackPanel Margin="2">
+                    <Button Content="Toevoegen" Margin="0,0,0,5" Name="PatientToevoegenButton" Click="PatientToevoegenButton_Click"/>
+                    <Button Content="Beheren" Margin="0,0,0,5" Name="PatientBeherenButton" Click="PatientBeherenButton_Click"/>
+                </StackPanel>
+            </GroupBox>
         </StackPanel>
 
-        <StackPanel Name="Filtering" DockPanel.Dock="Right" VerticalAlignment="Center">
-            <Label Content="Filteren"/>
+        <GroupBox Header="Filtering" DockPanel.Dock="Right" VerticalAlignment="Center" Width="150">
             <StackPanel>
-                <Label Content="Afdeling"/>
-                <ComboBox Name="FilterAfdelingenComboBox">
-                    
-                </ComboBox>
-            </StackPanel>
-            
-            <StackPanel>
-                <Label Content="Arts"/>
-            </StackPanel>
-            
-            <StackPanel>
-                <Label Content="Patient"/>
-            </StackPanel>
-            
-            <StackPanel>
-                <Label Content="Afdeling"/>
-            </StackPanel>
+                <StackPanel>
+                    <Label Content="Afdeling"/>
+                    <ComboBox Name="FilterAfdelingenComboBox" IsEditable="True" IsTextSearchEnabled="True" IsTextSearchCaseSensitive="False" TextSearch.TextPath="Naam">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Naam}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
 
-            <Button Content="Toepassen" Margin="0,10,0,0" Padding="3"/>
-            <Button x:Name="ClearFilterButton" Content="Clear" Margin="0,10,0,0" Padding="3" Click="ClearFilterButton_Click"/>
-        </StackPanel>
+                <StackPanel>
+                    <Label Content="Arts"/>
+                    <ComboBox Name="FilterArtsenComboBox" IsEditable="True" IsTextSearchEnabled="True" IsTextSearchCaseSensitive="False" TextSearch.TextPath="Naam">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Naam}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
+
+                <StackPanel>
+                    <Label Content="Patient"/>
+                    <!--Only shows Naam and voornaam as text when selected-->
+                    <ComboBox x:Name="FilterPatientenComboBox" IsEditable="True" IsTextSearchEnabled="True" IsTextSearchCaseSensitive="False" TextSearch.TextPath="Naam">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Naam}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
+
+                <Button x:Name="ApplyFilterButton" Content="Toepassen" Margin="0,10,0,0" Padding="3" Click="ApplyFilterButton_Click"/>
+                <Button x:Name="ClearFilterButton" Content="Clear" Margin="0,10,0,0" Padding="3" Click="ClearFilterButton_Click"/>
+            </StackPanel>
+        </GroupBox>
         
-        <ListView Name="AfsprakenListView">
+        <ListView Name="AfsprakenListView" MouseDoubleClick="AfsprakenListView_MouseDoubleClick">
             <ListView.View>
                 <GridView>
                     <!-- int Id, DateTime DatumTijdStart, int duurMin, string RijksregisterNrPatient, string RijksregisterNrArts, string afdelingCode; -->

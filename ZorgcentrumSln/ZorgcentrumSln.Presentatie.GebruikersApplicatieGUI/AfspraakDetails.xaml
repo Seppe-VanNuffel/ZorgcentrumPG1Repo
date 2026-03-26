@@ -1,0 +1,136 @@
+﻿<Window x:Class="ZorgcentrumSln.Presentatie.GebruikersApplicatieGUI.AfspraakDetails"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ZorgcentrumSln.Presentatie.GebruikersApplicatieGUI"
+        mc:Ignorable="d"
+        Title="AfspraakDetails" Height="477" Width="506">
+    <DockPanel>
+        <StackPanel Name="ButtonStackPanel" DockPanel.Dock="Right" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5">
+            <Button Name="OpslaanButton" Content="Opslaan" Width="75" Margin="0,0,0,5" Click="OpslaanButton_Click"/>
+            <Button Name="AnnulerenButton" Content="Annuleren" Width="75" Click="AnnulerenButton_Click"/>
+        </StackPanel>
+
+        <GroupBox Header="Details" Margin="5">
+            <StackPanel Margin="10">
+                <StackPanel.Resources>
+                    <Style TargetType="TextBox">
+                        <Setter Property="Width" Value="200"/>
+                        <Setter Property="HorizontalAlignment" Value="Right"/>
+                    </Style>
+                    <Style TargetType="DatePicker">
+                        <Setter Property="Width" Value="200"/>
+                        <Setter Property="HorizontalAlignment" Value="Right"/>
+                    </Style>
+                    <Style TargetType="ComboBox">
+                        <Setter Property="Width" Value="200"/>
+                    </Style>
+                    <Style TargetType="Label">
+                        <Setter Property="Width" Value="175"/>
+                    </Style>
+                    <Style TargetType="StackPanel">
+                        <Setter Property="Margin" Value="0,0,0,5"/>
+                        <Setter Property="Margin" Value="0,0,0,5"/>
+                    </Style>
+                </StackPanel.Resources>
+
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                    <Label Content="ID:"/>
+                    <TextBox Name="IDTextBox" IsReadOnly="True"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                    <Label Content="Type:"/>
+                    <ComboBox Name="TypeComboBox" SelectionChanged="TypeComboBox_SelectionChanged"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                    <Label Content="Afdeling:"/>
+                    <TextBox Name="AfdelingTextBox"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                    <StackPanel>
+                        <Label Content="Datum en Tijd:"/>
+                        <Label Content="Uur:"/>
+                        <Label Content="Minuten:"/>
+                    </StackPanel>
+                    <StackPanel>
+                        <DatePicker Name="DatumTijdDatePicker"/>
+                        <ComboBox Name="TijdUurComboBox" Margin="0,5">
+                            <ComboBoxItem Name="Uur0" Content="00"/>
+                            <ComboBoxItem Name="Uur1" Content="01"/>
+                            <ComboBoxItem Name="Uur2" Content="02"/>
+                            <ComboBoxItem Name="Uur3" Content="03"/>
+                            <ComboBoxItem Name="Uur4" Content="04"/>
+                            <ComboBoxItem Name="Uur5" Content="05"/>
+                            <ComboBoxItem Name="Uur6" Content="06"/>
+                            <ComboBoxItem Name="Uur7" Content="07"/>
+                            <ComboBoxItem Name="Uur8" Content="08"/>
+                            <ComboBoxItem Name="Uur9" Content="09"/>
+                            <ComboBoxItem Name="Uur10" Content="10"/>
+                            <ComboBoxItem Name="Uur11" Content="11"/>
+                            <ComboBoxItem Name="Uur12" Content="12"/>
+                            <ComboBoxItem Name="Uur13" Content="13"/>
+                            <ComboBoxItem Name="Uur14" Content="14"/>
+                            <ComboBoxItem Name="Uur15" Content="15"/>
+                            <ComboBoxItem Name="Uur16" Content="16"/>
+                            <ComboBoxItem Name="Uur17" Content="17"/>
+                            <ComboBoxItem Name="Uur18" Content="18"/>
+                            <ComboBoxItem Name="Uur19" Content="19"/>
+                            <ComboBoxItem Name="Uur20" Content="20"/>
+                            <ComboBoxItem Name="Uur21" Content="21"/>
+                            <ComboBoxItem Name="Uur22" Content="22"/>
+                            <ComboBoxItem Name="Uur23" Content="23"/>
+                        </ComboBox>
+                        <ComboBox Name="TijdMinutenComboBox">
+                            <ComboBoxItem Name="Minuten0" Content="00"/>
+                            <ComboBoxItem Name="Minuten5" Content="05"/>
+                            <ComboBoxItem Name="Minuten10" Content="10"/>
+                            <ComboBoxItem Name="Minuten15" Content="15"/>
+                            <ComboBoxItem Name="Minuten20" Content="20"/>
+                            <ComboBoxItem Name="Minuten25" Content="25"/>
+                            <ComboBoxItem Name="Minuten30" Content="30"/>
+                            <ComboBoxItem Name="Minuten35" Content="35"/>
+                            <ComboBoxItem Name="Minuten40" Content="40"/>
+                            <ComboBoxItem Name="Minuten45" Content="45"/>
+                            <ComboBoxItem Name="Minuten50" Content="50"/>
+                            <ComboBoxItem Name="Minuten55" Content="55"/>
+                        </ComboBox>
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                    <Label Content="Duur:"/>
+                    <TextBox Name="DuurTextBox"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                    <Label Content="Arts:"/>
+                    <TextBox Name="ArtsTextBox"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                    <Label Content="Patient:"/>
+                    <TextBox Name="PatientTextBox"/>
+                </StackPanel>
+
+                <StackPanel Name="AantalMinutenStackPanel" Orientation="Horizontal" Margin="0,0,0,5">
+                    <Label Content="Aantal Minuten op voorhand:"/>
+                    <TextBox Name="AantalMinutenTextBox"/>
+                </StackPanel>
+
+                <StackPanel Name="BeschrijvingStackPanel" Orientation="Horizontal">
+                    <Label Content="Beschrijving"/>
+                    <TextBox Name="BeschrijvingTextBox" Width="200" Height="100" TextWrapping="Wrap" AcceptsReturn="True"/>
+                </StackPanel>
+
+                <StackPanel Name="ReferentieStackPanel" Orientation="Horizontal">
+                    <Label Content="Referentie"/>
+                    <TextBox Name="ReferentieTextBox"/>
+                </StackPanel>
+            </StackPanel>
+        </GroupBox>
+    </DockPanel>
+</Window>

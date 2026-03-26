@@ -341,4 +341,40 @@ public class AfspraakRepositoryDatabase : IAfspraakRepositoryCRUD
         using var cmd = new SqlCommand(sql, conn);
         return (int)cmd.ExecuteScalar();
     }
+
+    public IEnumerable<AfspraakDto> GetAllByFilter(string filter)
+    {
+        // Get all afspraken that match the filter criteria (Afdeling, Arts, Patient)
+
+        var list = new List<AfspraakDto>();
+        using var conn = new SqlConnection(_connectionString);
+        string sql = @"
+            SELECT a.*, o.Beschrijving, o.AantalMinutenOpVoorhand, c.Referentie
+            FROM Afspraken a
+            LEFT JOIN Operaties o ON a.Id = o.Id
+            LEFT JOIN Controles c ON a.Id = c.Id
+            LEFT JOIN Artsen ar ON ar.RijksregisterNummer = a.RijksregisterNrArts
+            LEFT JOIN Patienten p ON p.RijksregisterNummer = a.RijksregisterNrPatient
+            WHERE " + filter;
+
+        conn.Open();
+
+        using var cmd = new SqlCommand(sql, conn);
+        using var reader = cmd.ExecuteReader();
+        while (reader.Read()) list.Add(MapReaderToDto(reader));
+
+        return list;
+    }
+
+    public IEnumerable<string> GetAllAfdelingen()
+    {
+        var list = new List<string>();
+        using var conn = new SqlConnection(_connectionString);
+        string sql = "SELECT DISTINCT Code FROM Afdelingen";
+        conn.Open();
+        using var cmd = new SqlCommand(sql, conn);
+        using var reader = cmd.ExecuteReader();
+        while (reader.Read()) list.Add(reader.GetString(0));
+        return list;
+    }
 }

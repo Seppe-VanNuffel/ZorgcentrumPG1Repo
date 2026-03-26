@@ -33,4 +33,29 @@ public class DomeinController
     {
         return GetAllPersonen().OfType<PatientPersoonDto>();
     }
+
+    public IEnumerable<AfspraakDto> GetAfsprakenByFilter(string filter)
+    {
+        return _afspraakRepository.GetAllByFilter(filter);
+    }
+
+    public IEnumerable<string> GetAllAfdelingCodes()
+    {
+        return _afspraakRepository.GetAllAfdelingen();
+    }
+
+    public void DeleteAfspraak(int id)
+    {
+        _afspraakRepository.Delete(id.ToString());
+    }
+
+    public void InsertAfspraak(AfspraakDto afspraak)
+    {
+        _afspraakRepository.Insert(afspraak);
+    }
+
+    public void UpdateAfspraak(AfspraakDto afspraak)
+    {
+        _afspraakRepository.Update(afspraak);
+    }
 }
