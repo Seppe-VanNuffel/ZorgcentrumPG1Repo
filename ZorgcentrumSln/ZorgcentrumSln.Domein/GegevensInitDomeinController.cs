@@ -6,12 +6,13 @@ using ZorgcentrumSln.Domein.Models.Persoon;
 
 namespace ZorgcentrumSln.Domein;
 
-public class GegevensInitDomeinController(IPersoonRepositoryRead pRRb, IAfspraakRepositoryRead aRRb, IPersoonRepositoryCRUD pRCRUD, IAfspraakRepositoryCRUD aRCRUD)
+public class GegevensInitDomeinController(IPersoonRepositoryRead pRRb, IAfspraakRepositoryRead aRRb, IPersoonRepositoryCRUD pRCRUD, IAfspraakRepositoryCRUD aRCRUD, IErrorLogging errorLogger)
 {
     private IPersoonRepositoryRead _pRRb = pRRb;
     private IAfspraakRepositoryRead _aRRb = aRRb;
     private IPersoonRepositoryCRUD _pRCRUDDB = pRCRUD;
     private IAfspraakRepositoryCRUD _aRCRUDDB = aRCRUD;
+    private IErrorLogging _errorLogger = errorLogger;
 
     public List<PersoonDto> GetAllPersonen()
     {
@@ -26,18 +27,8 @@ public class GegevensInitDomeinController(IPersoonRepositoryRead pRRb, IAfspraak
             }
             catch (Exception e)
             {
-                if (e.InnerException?.InnerException != null)
-                {
-                    Console.WriteLine($"FullError: {e.Message}, {e.InnerException.Message}, {e.InnerException.InnerException.Message}");
-                }
-                else if(e.InnerException != null && e.InnerException?.InnerException == null)
-                {
-                    Console.WriteLine($"InnerError: {e.Message}, {e.InnerException.Message}");
-                }
-                else
-                {
-                    Console.WriteLine($"Error: {e.Message}");
-                }
+                // TODO: Log deze error in een logbestand
+                _errorLogger.LogError(e);
             }
         }
 
@@ -73,18 +64,8 @@ public class GegevensInitDomeinController(IPersoonRepositoryRead pRRb, IAfspraak
             }
             catch (Exception e)
             {
-                if (e.InnerException?.InnerException != null)
-                {
-                    Console.WriteLine($"FullError: {e.Message}, {e.InnerException.Message}, {e.InnerException.InnerException.Message}");
-                }
-                else if (e.InnerException != null && e.InnerException?.InnerException == null)
-                {
-                    Console.WriteLine($"InnerError: {e.Message}, {e.InnerException.Message}");
-                }
-                else
-                {
-                    Console.WriteLine($"Error: {e.Message}");
-                }
+                // TODO: Log deze error in een logbestand
+                _errorLogger.LogError(e);
             }
         }
 

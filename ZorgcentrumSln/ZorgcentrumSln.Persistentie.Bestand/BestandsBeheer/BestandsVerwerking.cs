@@ -128,4 +128,18 @@ internal static class BestandsVerwerking
 
         return afspraken;
     }
+
+    internal static void SchrijfErrorBestand(string padNaarBestand, Exception e)
+    {
+        try
+        {
+            using var writer = new StreamWriter(padNaarBestand, append: true);
+            writer.WriteLine($"[{DateTime.Now}] - {e.Message}");
+            writer.WriteLine(e.StackTrace);
+        }
+        catch (Exception)
+        {
+            throw new Exception("Er is een fout opgetreden bij het schrijven naar het errorbestand.");
+        }
+    }
 }
