@@ -77,4 +77,13 @@ public class DomeinController
 
         _persoonRepository.Update(PersoonRelatedFactories.CreatePersoonDtoFromPersoon(persoon));
     }
+
+    public IEnumerable<PersoonDto> GetAllPersonenByFilter(string filter)
+    {
+        return _persoonRepository.GetAllByFilter(filter);
+    }
+    public IEnumerable<PersoonDto> GetAllPatientenByFilter(string filter)
+    {
+        return _persoonRepository.GetPatientenByFilter(filter);
+    }
 }

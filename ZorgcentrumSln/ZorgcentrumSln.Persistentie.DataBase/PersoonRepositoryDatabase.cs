@@ -403,4 +403,102 @@ public class PersoonRepositoryDatabase : IPersoonRepositoryCRUD
         using var cmd = new SqlCommand(sql, conn);
         return (int)cmd.ExecuteScalar();
     }
+
+    public IEnumerable<PersoonDto> GetAllByFilter(string filter)
+    {
+        var personen = new List<PersoonDto>();
+        using var conn = new SqlConnection(_connectionString);
+
+        string artsSql = @"
+        SELECT p.RijksregisterNummer, p.Naam, p.Voornaam, a.RIZIV, a.SpecialisatieCode 
+        FROM Personen p 
+        INNER JOIN Artsen a ON p.RijksregisterNummer = a.RijksregisterNummer
+        INNER JOIN ArtsenAfdelingen af ON a.RijksregisterNummer = af.RijksregisterNummer
+        WHERE " + filter;
+
+        conn.Open();
+
+        using (var cmd = new SqlCommand(artsSql, conn))
+        {
+            using var reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                var rr = reader["RijksregisterNummer"].ToString();
+                // Note: We get departments inside the loop or via a separate joined query. 
+                // For simplicity and to avoid MultipleActiveResultSets issues, we use a helper.
+                var depts = GetAfdelingen(rr, "ArtsenAfdelingen");
+
+                personen.Add(new ArtsPersoonDto(
+                    rr,
+                    reader["Naam"].ToString(),
+                    reader["Voornaam"].ToString(),
+                    reader["RIZIV"].ToString(),
+                    reader["SpecialisatieCode"].ToString(),
+                    depts
+                ));
+            }
+        }
+
+        // 2. Get all Patients
+        string patSql = @"
+        SELECT p.RijksregisterNummer, p.Naam, p.Voornaam 
+        FROM Personen p 
+        INNER JOIN Patienten pt ON p.RijksregisterNummer = pt.RijksregisterNummer
+        INNER JOIN PatientenAfdelingen af ON pt.RijksregisterNummer = af.RijksregisterNummer
+        WHERE " + filter;
+
+        using (var cmd = new SqlCommand(patSql, conn))
+        {
+            using var reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                var rr = reader["RijksregisterNummer"].ToString();
+                var depts = GetAfdelingen(rr, "PatientenAfdelingen");
+
+                personen.Add(new PatientPersoonDto(
+                    rr,
+                    reader["Naam"].ToString(),
+                    reader["Voornaam"].ToString(),
+                    depts
+                ));
+            }
+        }
+
+        return personen;
+    }
+
+    public IEnumerable<PersoonDto> GetPatientenByFilter(string filter)
+    {
+        var personen = new List<PersoonDto>();
+        using var conn = new SqlConnection(_connectionString);
+
+        string patSql = @"
+        SELECT p.RijksregisterNummer, p.Naam, p.Voornaam 
+        FROM Personen p 
+        INNER JOIN Patienten pt ON p.RijksregisterNummer = pt.RijksregisterNummer
+        INNER JOIN PatientenAfdelingen af ON pt.RijksregisterNummer = af.RijksregisterNummer
+        INNER JOIN Afspraken afspr ON pt.RijksregisterNummer = afspr.RijksregisterNrPatient
+        WHERE " + filter;
+
+        conn.Open();
+
+        using (var cmd = new SqlCommand(patSql, conn))
+        {
+            using var reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                var rr = reader["RijksregisterNummer"].ToString();
+                var depts = GetAfdelingen(rr, "PatientenAfdelingen");
+
+                personen.Add(new PatientPersoonDto(
+                    rr,
+                    reader["Naam"].ToString(),
+                    reader["Voornaam"].ToString(),
+                    depts
+                ));
+            }
+        }
+
+        return personen;
+    }
 }

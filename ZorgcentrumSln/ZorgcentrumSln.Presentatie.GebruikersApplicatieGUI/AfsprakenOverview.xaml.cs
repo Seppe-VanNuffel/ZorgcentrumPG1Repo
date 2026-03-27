@@ -19,8 +19,7 @@ public partial class AfsprakenOverview : Window
 
         InitializeComponent();
 
-        RefreshAfsprakenListView();
-        RefreshFilterItems();
+        RefreshFilterAfdelingenComboBox();
 
         if (!_isAdmin)
             // Disable or hide admin-specific controls
@@ -34,7 +33,11 @@ public partial class AfsprakenOverview : Window
         FilterArtsenComboBox.ItemsSource = _dc.GetAllArtsen().ToList().OrderBy(x => x.Naam);
 
         RefreshFilterPatientenComboBox();
+        RefreshFilterAfdelingenComboBox();
+    }
 
+    private void RefreshFilterAfdelingenComboBox()
+    {
         List<Afdeling> afdelingen = new List<Afdeling>();
 
         foreach (var item in _dc.GetAllAfdelingCodes())
@@ -51,11 +54,6 @@ public partial class AfsprakenOverview : Window
         FilterPatientenComboBox.ItemsSource = _dc.GetAllPatienten().OrderBy(x => x.Naam);
     }
 
-    private void RefreshAfsprakenListView()
-    {
-        AfsprakenListView.ItemsSource = _dc.GetAllAfspraken().OrderBy(x => x.Id);
-    }
-
     private void AfsluitenMenuItem_Click(object sender, RoutedEventArgs e)
     {
         this.Close();
@@ -65,8 +63,18 @@ public partial class AfsprakenOverview : Window
     {
         // Add logic to apply filters based on user input and refresh the list view
         // Give an easy to implement filter format to integrate into the database query
+        if(AfsprakenListView.Visibility == Visibility.Collapsed)
+        {
+            AfsprakenListView.Visibility = Visibility.Visible;
+            NoAfsprakenTextBlock.Visibility = Visibility.Collapsed;
+        }
+        RefreshAfsprakenList();
+    }
+
+    private void RefreshAfsprakenList()
+    {
         string filter = "";
-        if(FilterArtsenComboBox.SelectedIndex != -1)
+        if (FilterArtsenComboBox.SelectedIndex != -1)
             filter += $"ar.RijksregisterNummer='{(FilterArtsenComboBox.SelectedItem as ArtsPersoonDto).RijksregisterNummer}'";
 
         if (FilterPatientenComboBox.SelectedIndex != -1)
@@ -75,7 +83,7 @@ public partial class AfsprakenOverview : Window
             {
                 filter += " AND ";
             }
-            filter += $"p.RijksregisterNummer='{(FilterPatientenComboBox.SelectedItem as PatientPersoonDto).RijksregisterNummer}'"; 
+            filter += $"p.RijksregisterNummer='{(FilterPatientenComboBox.SelectedItem as PatientPersoonDto).RijksregisterNummer}'";
         }
 
         if (FilterAfdelingenComboBox.SelectedIndex != -1)
@@ -84,10 +92,10 @@ public partial class AfsprakenOverview : Window
             {
                 filter += " AND ";
             }
-            filter += $"a.AfdelingCode='{(FilterAfdelingenComboBox.SelectedItem as Afdeling).Code}'"; 
+            filter += $"a.AfdelingCode='{(FilterAfdelingenComboBox.SelectedItem as Afdeling).Code}'";
         }
 
-        if(!string.IsNullOrWhiteSpace(filter))
+        if (!string.IsNullOrWhiteSpace(filter))
             AfsprakenListView.ItemsSource = _dc.GetAfsprakenByFilter(filter).OrderBy(x => x.Id).ToList();
         else
             MessageBox.Show("Selecteer minstens één filter om toe te passen.", "Geen filter geselecteerd", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -95,7 +103,7 @@ public partial class AfsprakenOverview : Window
 
     private void ClearFilterButton_Click(object sender, RoutedEventArgs e)
     {
-        RefreshAfsprakenListView();
+        RefreshAfsprakenList();
         FilterAfdelingenComboBox.SelectedIndex = -1;
         FilterPatientenComboBox.SelectedIndex = -1;
         FilterArtsenComboBox.SelectedIndex = -1;
@@ -108,7 +116,7 @@ public partial class AfsprakenOverview : Window
             var afspraakDetailsWindow = new AfspraakDetails(_dc, AfspraakDetails.AfspraakDetailsMode.View, selectedAfspraak);
             afspraakDetailsWindow.ShowDialog();
 
-            RefreshAfsprakenListView();
+            RefreshAfsprakenList();
         }
     }
 
@@ -117,7 +125,7 @@ public partial class AfsprakenOverview : Window
         var afspraakDetailsWindow = new AfspraakDetails(_dc, AfspraakDetails.AfspraakDetailsMode.Create);
         afspraakDetailsWindow.ShowDialog();
 
-        RefreshAfsprakenListView();
+        RefreshAfsprakenList();
     }
 
     private void AfspraakBewerkenButton_Click(object sender, RoutedEventArgs e)
@@ -127,7 +135,7 @@ public partial class AfsprakenOverview : Window
             var afspraakDetailsWindow = new AfspraakDetails(_dc, AfspraakDetails.AfspraakDetailsMode.Edit, selectedAfspraak);
             afspraakDetailsWindow.ShowDialog(); 
 
-            RefreshAfsprakenListView();
+            RefreshAfsprakenList();
         }
     }
 
@@ -139,7 +147,7 @@ public partial class AfsprakenOverview : Window
             if (result == MessageBoxResult.Yes)
             {
                 _dc.DeleteAfspraak(selectedAfspraak.Id);
-                RefreshAfsprakenListView();
+                RefreshAfsprakenList();
             }
         }
     }
@@ -163,5 +171,54 @@ public partial class AfsprakenOverview : Window
     private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
     {
         App.Current.Shutdown();
+    }
+
+    private void FilterAfdelingenComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+    {
+        string filter = "";
+
+        if (FilterAfdelingenComboBox.SelectedIndex != -1)
+        {
+            filter += $"af.AfdelingCode='{(FilterAfdelingenComboBox.SelectedItem as Afdeling).Code}'";
+        }
+        else
+            throw new ArgumentException("Ongeldige selectie in FilterAfdelingenComboBox");
+
+        var personen = _dc.GetAllPersonenByFilter(filter);
+
+        if (personen != null)
+        {
+            FilterArtsenComboBox.ItemsSource = personen.Where(p => p is ArtsPersoonDto).OrderBy(x => x.Naam);
+            FilterPatientenComboBox.ItemsSource = personen.Where(p => p is PatientPersoonDto).OrderBy(x => x.Naam);
+        }
+    }
+
+    private void FilterArtsenComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+    {
+        string filter = "";
+
+        if (FilterArtsenComboBox.SelectedIndex != -1)
+            filter += $"afspr.RijksregisterNrArts='{(FilterArtsenComboBox.SelectedItem as ArtsPersoonDto).RijksregisterNummer}'";
+        else
+            throw new ArgumentException("Ongeldige selectie in FilterArtsenComboBox");
+
+
+        if (FilterAfdelingenComboBox.SelectedIndex != -1)
+        {
+            if (!string.IsNullOrWhiteSpace(filter))
+            {
+                filter += " AND ";
+            }
+            filter += $"af.AfdelingCode='{(FilterAfdelingenComboBox.SelectedItem as Afdeling).Code}'";
+        }
+        else
+            throw new ArgumentException("Ongeldige selectie in FilterAfdelingenComboBox");
+
+        var personen = _dc.GetAllPatientenByFilter(filter);
+
+        if (personen != null)
+        {
+            FilterPatientenComboBox.ItemsSource = personen.OrderBy(x => x.Naam);
+        }
     }
 }

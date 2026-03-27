@@ -20,4 +20,6 @@ public interface IPersoonRepositoryCRUD : IPersoonRepositoryRead
 
     public void ClearAllPersonen();
     int GetAmount();
+    IEnumerable<PersoonDto> GetAllByFilter(string filter);
+    IEnumerable<PersoonDto> GetPatientenByFilter(string filter);
 }
