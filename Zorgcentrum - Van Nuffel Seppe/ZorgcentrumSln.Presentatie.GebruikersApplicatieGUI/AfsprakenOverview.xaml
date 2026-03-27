@@ -60,7 +60,7 @@
                 <StackPanel>
                     <Label Content="Patient"/>
                     <!--Only shows Naam and voornaam as text when selected-->
-                    <ComboBox x:Name="FilterPatientenComboBox" IsEditable="True" IsTextSearchEnabled="True" IsTextSearchCaseSensitive="False" TextSearch.TextPath="Naam, Voornaam">
+                    <ComboBox x:Name="FilterPatientenComboBox" IsEditable="True" IsTextSearchEnabled="True" IsTextSearchCaseSensitive="False" TextSearch.TextPath="Naam">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock>
